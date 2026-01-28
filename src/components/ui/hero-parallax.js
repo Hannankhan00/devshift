@@ -7,6 +7,7 @@ import {
   useSpring,
   MotionValue,
 } from "framer-motion";
+import Image from "next/image";
 
 export const HeroParallax = ({
   products,
@@ -174,7 +175,7 @@ export const ProductCard = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img
+        <Image
           src={product.thumbnail}
           height="600"
           width="600"
@@ -239,8 +240,9 @@ export const MobileProductCard = ({ product }) => {
       >
         {/* Enhanced image container with gradient overlay */}
         <div className="relative aspect-video overflow-hidden">
-          <img
+          <Image
             src={product.thumbnail}
+            fill
             className="object-cover w-full h-full transition-all duration-500 group-hover:scale-110"
             alt={product.title}
           />

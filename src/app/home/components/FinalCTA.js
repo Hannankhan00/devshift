@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function FinalCTA() {
@@ -20,8 +21,8 @@ export default function FinalCTA() {
   };
 
   const titleVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 60,
       scale: 0.8
     },
@@ -95,7 +96,7 @@ export default function FinalCTA() {
       <motion.div
         className="absolute inset-0 opacity-10 pointer-events-none"
         initial={{ scale: 0, rotate: 0 }}
-        animate={{ 
+        animate={{
           scale: [0, 1.3, 1],
           rotate: [0, 360],
         }}
@@ -113,7 +114,7 @@ export default function FinalCTA() {
 
       <div className="relative z-10 container mx-auto px-4 max-w-7xl">
         {/* Main CTA */}
-        <motion.div 
+        <motion.div
           className="text-center mb-20"
           variants={titleVariants}
         >
@@ -152,7 +153,7 @@ export default function FinalCTA() {
           >
             Let&apos;s Build Your Next Big Thing
           </motion.h2>
-          
+
           <motion.p
             className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed mb-12"
             style={{ color: 'var(--text-muted)' }}
@@ -161,7 +162,7 @@ export default function FinalCTA() {
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Ready to transform your vision into reality? Let&apos;s create something 
+            Ready to transform your vision into reality? Let&apos;s create something
             extraordinary together.
           </motion.p>
 
@@ -186,7 +187,7 @@ export default function FinalCTA() {
                 ease: "easeInOut"
               }}
             />
-            
+
             <Link href="/contact">
               <motion.button
                 className="relative px-12 py-6 rounded-full font-bold text-lg text-white overflow-hidden group"
@@ -206,7 +207,7 @@ export default function FinalCTA() {
                     ease: "linear"
                   }}
                 />
-                
+
                 <span className="relative flex items-center gap-3">
                   Start Your Project
                   <motion.span
@@ -254,7 +255,7 @@ export default function FinalCTA() {
                     {/* Glowing gradient background */}
                     <motion.div
                       className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${link.gradient} blur-xl`}
-                      animate={{ 
+                      animate={{
                         opacity: isHovered ? 0.4 : 0,
                         scale: isHovered ? 1.1 : 1
                       }}
@@ -276,10 +277,12 @@ export default function FinalCTA() {
                         }}
                         transition={{ duration: 0.3 }}
                       >
-                        <img
+                        <Image
                           src={link.image}
                           alt={link.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
                         />
                         {/* Image overlay */}
                         <motion.div
@@ -321,10 +324,10 @@ export default function FinalCTA() {
                             {/* Round Arrow Button */}
                             <motion.button
                               className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-                              style={{ 
+                              style={{
                                 backgroundColor: isHovered ? 'var(--accent)' : 'var(--card-border)',
                               }}
-                              animate={{ 
+                              animate={{
                                 x: isHovered ? 3 : 0,
                                 scale: isHovered ? 1.1 : 1,
                               }}
@@ -332,8 +335,8 @@ export default function FinalCTA() {
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.95 }}
                             >
-                              <ArrowRight 
-                                size={16} 
+                              <ArrowRight
+                                size={16}
                                 style={{ color: isHovered ? '#ffffff' : 'var(--text-muted)' }}
                               />
                             </motion.button>

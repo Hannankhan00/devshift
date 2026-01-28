@@ -2,7 +2,8 @@
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 
 export const AnimatedTestimonials = ({
   testimonials,
@@ -10,9 +11,9 @@ export const AnimatedTestimonials = ({
 }) => {
   const [active, setActive] = useState(0);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setActive((prev) => (prev + 1) % testimonials.length);
-  };
+  }, [testimonials.length]);
 
   const handlePrev = () => {
     setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
@@ -27,7 +28,7 @@ export const AnimatedTestimonials = ({
       const interval = setInterval(handleNext, 5000);
       return () => clearInterval(interval);
     }
-  }, [autoplay]);
+  }, [autoplay, handleNext]);
 
   const randomRotateY = () => {
     return Math.floor(Math.random() * 21) - 10;
@@ -70,7 +71,7 @@ export const AnimatedTestimonials = ({
                   }}
                   className="absolute inset-0 origin-bottom"
                 >
-                  <img
+                  <Image
                     src={testimonial.src}
                     alt={testimonial.name}
                     width={500}
@@ -103,19 +104,19 @@ export const AnimatedTestimonials = ({
               ease: "easeInOut",
             }}
           >
-            <h3 
+            <h3
               className="text-2xl font-bold"
               style={{ color: 'var(--foreground)' }}
             >
               {testimonials[active].name}
             </h3>
-            <p 
+            <p
               className="text-sm"
               style={{ color: 'var(--text-muted)' }}
             >
               {testimonials[active].designation}
             </p>
-            <motion.p 
+            <motion.p
               className="mt-8 text-lg"
               style={{ color: 'var(--text-muted)' }}
             >
@@ -150,8 +151,8 @@ export const AnimatedTestimonials = ({
               className="group/button flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300"
               style={{ backgroundColor: 'var(--card-bg)' }}
             >
-              <IconArrowLeft 
-                className="h-5 w-5 transition-transform duration-300 group-hover/button:rotate-12" 
+              <IconArrowLeft
+                className="h-5 w-5 transition-transform duration-300 group-hover/button:rotate-12"
                 style={{ color: 'var(--foreground)' }}
               />
             </button>
@@ -160,7 +161,7 @@ export const AnimatedTestimonials = ({
               className="group/button flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300"
               style={{ backgroundColor: 'var(--card-bg)' }}
             >
-              <IconArrowRight 
+              <IconArrowRight
                 className="h-5 w-5 transition-transform duration-300 group-hover/button:-rotate-12"
                 style={{ color: 'var(--foreground)' }}
               />
