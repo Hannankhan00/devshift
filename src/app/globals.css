@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  /* Light theme */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card-bg: #f8fafc;
+  --card-border: #e2e8f0;
+  --text-muted: #64748b;
+  --accent: #4c00ff;
+  --accent-hover: #3b00cc;
+}
+
+.dark {
+  /* Dark theme */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card-bg: #111827;
+  --card-border: #374151;
+  --text-muted: #9ca3af;
+  --accent: #4c00ff;
+  --accent-hover: #7c3aed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hide native cursor globally on desktop; show on mobile */
+@media (min-width: 768px) and (hover: hover) {
+  html, body, * {
+    cursor: none !important;
+  }
+}

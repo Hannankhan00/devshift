@@ -1,0 +1,48 @@
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import Header from "./components/header";
+import Footer from "./components/footer";
+import CustomCursor from "./components/custom-cursor";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import ErrorBoundary from "./components/error-boundary";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata = {
+  title: "Devshift - Professional Web Development Services",
+  description: "Expert web development, UI/UX design, and automation & AI solutions.",
+  keywords: "web development, UI/UX design, automation, AI",
+  authors: [{ name: "Devshift Team" }],
+  openGraph: {
+    title: "Devshift - Professional Web Development Services",
+    description: "Expert web development, UI/UX design, and automation & AI solutions.",
+    type: "website",
+  },
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
+      >
+        <ErrorBoundary>
+          <CustomCursor />
+          <Header />
+          <main className="pt-16">{children}</main>
+          <Footer />
+          {process.env.NODE_ENV === 'production' && <SpeedInsights />}
+        </ErrorBoundary>
+      </body>
+    </html>
+  );
+}
