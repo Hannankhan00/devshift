@@ -319,31 +319,31 @@ export default function Services() {
 
   const services = [
     {
-      title: "Web Development",
-      description: "Cutting-edge web applications built with modern technologies. From responsive designs to complex web platforms that scale with your business and deliver exceptional performance.",
+      title: "GDS Cloud & Web Engineering",
+      description: "Secure, scalable cloud-native digital platforms built with modern open-source architectures, meeting the Technology Code of Practice (TCoP) and UK data residency standards.",
       icon: <WebDevIcon />,
-      gradient: "linear-gradient(135deg, rgba(76, 0, 255, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)",
+      gradient: "linear-gradient(135deg, rgba(29, 112, 184, 0.12) 0%, rgba(30, 64, 175, 0.1) 100%)",
       delay: 0.2
     },
     {
-      title: "App Development",
-      description: "Native and cross-platform mobile applications that deliver exceptional user experiences. iOS, Android, and React Native solutions that engage your audience.",
+      title: "Citizen Portals & Accessible Apps",
+      description: "Inclusive citizen-facing digital services and mobile apps engineered to WCAG 2.2 AA standards, providing equitable access and assisted digital support for all UK citizens.",
       icon: <AppDevIcon />,
-      gradient: "linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%)",
+      gradient: "linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(14, 116, 144, 0.1) 100%)",
       delay: 0.4
     },
     {
-      title: "UI/UX Design",
-      description: "Beautiful, intuitive interfaces that users love. We craft designs that not only look stunning but also drive engagement, conversions, and business growth.",
+      title: "User Research & Service Design",
+      description: "Rigorous user research, prototyping, and service assessments across Discovery and Alpha phases aligned directly with the 14 GDS Service Standards.",
       icon: <DesignIcon />,
-      gradient: "linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)",
+      gradient: "linear-gradient(135deg, rgba(14, 116, 144, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)",
       delay: 0.6
     },
     {
-      title: "AI Automation",
-      description: "Leverage the power of artificial intelligence to automate your business processes, improve efficiency, and unlock new opportunities for sustainable growth.",
+      title: "Public Sector Data & Ethical AI",
+      description: "Interoperable data pipelines, secure open APIs, and compliant automation designed to adhere to the UK Government Algorithmic Transparency Standard and UK GDPR.",
       icon: <AiIcon />,
-      gradient: "linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(239, 68, 68, 0.1) 100%)",
+      gradient: "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(29, 112, 184, 0.12) 100%)",
       delay: 0.8
     }
   ];
@@ -370,24 +370,23 @@ export default function Services() {
         >
 
           <motion.h2
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             style={{ color: 'var(--foreground)' }}
           >
-            Our Services
+            Public Sector Digital Capabilities
           </motion.h2>
 
           <motion.p
-            className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             style={{ color: 'var(--text-muted)' }}
           >
-            We create exceptional digital experiences through cutting-edge development,
-            beautiful design, and strategic solutions that transform your business into digital success stories.
+            Delivering secure, user-centred software engineering and service design for UK central government, local authorities, and the NHS.
           </motion.p>
         </motion.div>
 

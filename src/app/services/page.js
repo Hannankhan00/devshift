@@ -4,17 +4,17 @@ import Process from "../home/components/Process";
 import FinalCTA from "../home/components/FinalCTA";
 
 export const metadata = {
-  title: "Services - Devshift",
-  description: "Professional web development, UI/UX design, and automation & AI solutions.",
+  title: "GDS Capabilities & Public Sector Services - Devshift",
+  description: "User-centred software engineering, legacy modernisation, and cloud digital services aligned with GDS standards and Technology Code of Practice.",
 };
 
 export default function Services() {
   return (
     <>
       <HeroParticles
-        title="Our Services"
-        description="Comprehensive digital solutions tailored to elevate your business. From concept to execution, we deliver excellence in every line of code and pixel of design."
-        ctaText="Start Your Project"
+        title="Public Sector Digital Capabilities"
+        description="User-centred, secure, and compliant digital software engineering aligned with the GDS Service Standard and UK Government Technology Code of Practice from Discovery to Live."
+        ctaText="Explore Capabilities"
         quantity={80}
         staticity={30}
       />

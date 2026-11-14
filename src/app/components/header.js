@@ -10,16 +10,17 @@ import ThemeToggle from "./theme-toggle";
 const NAV = [
     { label: "Home", href: "/" },
     {
-        label: "Services",
+        label: "Capabilities",
         items: [
-            { label: "Web Development", href: "/services/web" },
-            { label: "App Development", href: "/services/app" },
-            { label: "UI/UX Design", href: "/services/design" },
-            { label: "Automation & AI", href: "/services/automation" },
+            { label: "GDS Delivery (Discovery to Live)", href: "/services" },
+            { label: "Cloud & Software Engineering", href: "/services/web" },
+            { label: "Citizen Portals & Mobile Apps", href: "/services/app" },
+            { label: "User Research & Service Design", href: "/services/design" },
+            { label: "Data, Automation & AI", href: "/services/automation" },
         ],
     },
-    { label: "Portfolio", href: "/portfolio" },
-    { label: "About", href: "/about" },
+    { label: "Case Studies", href: "/portfolio" },
+    { label: "About Us", href: "/about" },
     { label: "Contact", href: "/contact" },
 ];
 
@@ -190,14 +191,14 @@ export default function Header() {
                             Contact
                         </Link>
                         <Link
-                            href="/quote"
+                            href="/contact"
                             className="rounded-xl px-4 py-2 text-sm font-semibold text-white transition-colors duration-200"
                             style={{
                                 backgroundColor: 'var(--accent)',
                                 '--hover-bg': 'var(--accent-hover)'
                             }}
                         >
-                            Get a Quote
+                            Procure via Frameworks
                         </Link>
                     </div>
 
@@ -335,7 +336,7 @@ export default function Header() {
                                     Contact
                                 </Link>
                                 <Link
-                                    href="/quote"
+                                    href="/contact"
                                     onClick={() => setMobileOpen(false)}
                                     className="block rounded-lg px-4 py-2 text-center text-sm font-semibold text-white transition-colors duration-200"
                                     style={{
@@ -343,7 +344,7 @@ export default function Header() {
                                         '--hover-bg': 'var(--accent-hover)'
                                     }}
                                 >
-                                    Get a Quote
+                                    Procure via Frameworks
                                 </Link>
                             </div>
                         </motion.aside>

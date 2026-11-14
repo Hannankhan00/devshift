@@ -1,8 +1,9 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Github, Instagram, Linkedin, MessageCircle, ArrowUpRight, Heart } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 export default function Footer() {
@@ -27,307 +28,218 @@ export default function Footer() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: "easeOut",
       },
     },
   };
 
   const socialLinks = [
-    { name: "LinkedIn", icon: Linkedin, href: "#", color: "hover:text-blue-600" },
-    { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/devshift_official?igsh=djcyNHRjYzJxcTM0", color: "hover:text-pink-500" },
-    { name: "GitHub", icon: Github, href: "https://github.com/devshiftofficials", color: "hover:text-gray-400" },
-    { name: "WhatsApp", icon: MessageCircle, href: "https://wa.me/923397197970", color: "hover:text-green-500" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", label: "Devshift LinkedIn" },
+    { name: "GitHub", icon: Github, href: "https://github.com/devshiftofficials", label: "Devshift GitHub" },
   ];
 
   const footerLinks = [
     {
-      title: "Services",
+      title: "Capabilities",
       links: [
-        { name: "Web Development", href: "/services/web" },
-        { name: "UI/UX Design", href: "/services/design" },
-        { name: "Automation & AI", href: "/services/automation" },
-      ]
+        { name: "GDS Phase Delivery", href: "/services" },
+        { name: "Cloud & Web Engineering", href: "/services/web" },
+        { name: "Citizen Portals & Apps", href: "/services/app" },
+        { name: "User Research & Design", href: "/services/design" },
+        { name: "Data & Ethical AI", href: "/services/automation" },
+      ],
     },
     {
-      title: "Company",
+      title: "Procurement & Compliance",
       links: [
-        { name: "About Us", href: "/about" },
-        { name: "Portfolio", href: "/portfolio" },
-        { name: "Contact", href: "/contact" },
-        { name: "Get a Quote", href: "/quote" },
-      ]
+        { name: "Frameworks & How to Buy", href: "/contact" },
+        { name: "Accessibility Statement", href: "/contact" },
+        { name: "Social Value (PPN 06/20)", href: "/contact" },
+        { name: "Carbon Reduction Plan", href: "/contact" },
+        { name: "Modern Slavery Statement", href: "/contact" },
+      ],
     },
     {
-      title: "Resources",
+      title: "Organisation",
       links: [
-        { name: "Privacy Policy", href: "/privacy" },
-        { name: "Terms of Service", href: "/terms" },
-        { name: "Blog", href: "/blog" },
-        { name: "Careers", href: "/careers" },
-      ]
-    }
+        { name: "About Devshift", href: "/about" },
+        { name: "Public Sector Case Studies", href: "/portfolio" },
+        { name: "Security & Cyber Essentials", href: "/contact" },
+        { name: "Commercial Desk Contact", href: "/contact" },
+      ],
+    },
   ];
 
   return (
-    <motion.footer
-      className="relative overflow-hidden"
-      style={{ backgroundColor: 'var(--background)' }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={containerVariants}
+    <footer
+      className="relative overflow-hidden border-t"
+      style={{ 
+        backgroundColor: "var(--background)",
+        borderColor: "var(--card-border)" 
+      }}
+      role="contentinfo"
     >
-      {/* Animated background gradients */}
-      <motion.div
-        className="absolute inset-0 opacity-5 pointer-events-none"
-        initial={{ scale: 0, rotate: 0 }}
-        animate={{
-          scale: [0, 1.2, 1],
-          rotate: [0, 360],
-        }}
-        transition={{
-          duration: 50,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      >
-        <div className="absolute top-10 left-10 w-80 h-80 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-green-500 to-cyan-500 rounded-full blur-3xl"></div>
-      </motion.div>
-
-      <div className="relative z-10 container mx-auto px-4 py-20 max-w-7xl">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 mb-16">
-          {/* Left Column - Brand & Contact */}
-          <motion.div className="space-y-8" variants={itemVariants}>
-            {/* Brand Section */}
-            <div className="space-y-6">
-              <motion.div
-                className="flex items-center"
-                whileHover={{ scale: 1.05 }}
-                animate={{
-                  scale: [1, 1.02, 1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  hover: { duration: 0.3 }
-                }}
-              >
+      <div className="relative z-10 container mx-auto px-4 py-16 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 mb-12">
+          {/* Left Column - Brand & Public Sector Desk */}
+          <div className="lg:col-span-5 space-y-6">
+            <div>
+              <Link href="/" aria-label="Devshift Home">
                 <Image
                   src="/assets/logo.png"
-                  alt="Devshift"
-                  width={160}
-                  height={60}
-                  className="h-16 w-auto"
+                  alt="Devshift Logo"
+                  width={150}
+                  height={44}
+                  className="h-10 w-auto"
                 />
-              </motion.div>
-
-              <motion.p
-                className="text-lg leading-relaxed max-w-md"
-                style={{ color: 'var(--text-muted)' }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                viewport={{ once: true }}
+              </Link>
+              <p
+                className="mt-4 text-sm leading-relaxed max-w-md"
+                style={{ color: "var(--text-muted)" }}
               >
-                We create exceptional digital experiences through cutting-edge development,
-                beautiful design, and strategic solutions that transform businesses.
-              </motion.p>
+                Specialist digital public services and software engineering for UK central government, local authorities, and NHS trusts. Aligned with the GDS Service Standard and Technology Code of Practice.
+              </p>
             </div>
 
-            {/* Contact Info */}
-            <motion.div className="space-y-4" variants={itemVariants}>
-              <h3 className="text-lg font-semibold"
-                style={{ color: 'var(--foreground)' }}
+            {/* Public Sector Commercial Contact Info */}
+            <div className="space-y-3 pt-2">
+              <h3
+                className="text-xs font-semibold uppercase tracking-wider"
+                style={{ color: "var(--foreground)" }}
               >
-                Let&apos;s Connect
+                Public Sector Commercial Desk
               </h3>
-              <div className="space-y-3">
-                <motion.div
-                  className="flex items-center gap-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Mail size={18} style={{ color: 'var(--accent)' }} />
-                  <span style={{ color: 'var(--text-muted)' }}>hello@devshift.com</span>
-                </motion.div>
-                <motion.div
-                  className="flex items-center gap-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Phone size={18} style={{ color: 'var(--accent)' }} />
-                  <span style={{ color: 'var(--text-muted)' }}>+1 (555) 123-4567</span>
-                </motion.div>
-                <motion.div
-                  className="flex items-center gap-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <MapPin size={18} style={{ color: 'var(--accent)' }} />
-                  <span style={{ color: 'var(--text-muted)' }}>123 Digital Street, Tech City</span>
-                </motion.div>
+              <div className="space-y-2 text-xs sm:text-sm">
+                <div className="flex items-center gap-2.5">
+                  <Mail size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
+                  <span style={{ color: "var(--text-muted)" }}>publicsector@devshift.co.uk</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Phone size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
+                  <span style={{ color: "var(--text-muted)" }}>+44 (0) 20 7946 0192 (UK Commercial Desk)</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <MapPin size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
+                  <span style={{ color: "var(--text-muted)" }}>London, United Kingdom</span>
+                </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
 
-          {/* Right Column - Links */}
-          <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-8" variants={itemVariants}>
+            {/* Quick trust pill */}
+            <div 
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs border"
+              style={{
+                backgroundColor: "var(--card-bg)",
+                borderColor: "var(--card-border)",
+                color: "var(--foreground)"
+              }}
+            >
+              <ShieldCheck size={14} style={{ color: "var(--accent)" }} aria-hidden="true" />
+              <span>Cyber Essentials Plus &middot; Crown Commercial Service Aligned</span>
+            </div>
+          </div>
+
+          {/* Right Column - Navigation Links */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8">
             {footerLinks.map((section, sectionIndex) => (
-              <motion.div key={section.title} className="space-y-4">
-                <h3 className="text-lg font-semibold"
-                  style={{ color: 'var(--foreground)' }}
+              <div key={section.title} className="space-y-3">
+                <h3
+                  className="text-xs font-semibold uppercase tracking-wider"
+                  style={{ color: "var(--foreground)" }}
                 >
                   {section.title}
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-2">
                   {section.links.map((link, linkIndex) => (
-                    <motion.li
-                      key={link.name}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: linkIndex * 0.1 }}
-                      viewport={{ once: true }}
-                    >
+                    <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="group flex items-center gap-2 text-sm transition-all duration-300"
-                        style={{ color: 'var(--text-muted)' }}
+                        className="group inline-flex items-center gap-1 text-xs sm:text-sm transition-colors duration-150"
+                        style={{ color: "var(--text-muted)" }}
                         onMouseEnter={() => setHoveredLink(`${sectionIndex}-${linkIndex}`)}
                         onMouseLeave={() => setHoveredLink(null)}
                       >
-                        <span className="transition-colors duration-300"
-                          style={{ color: hoveredLink === `${sectionIndex}-${linkIndex}` ? 'var(--accent)' : 'inherit' }}>
+                        <span
+                          style={{
+                            color: hoveredLink === `${sectionIndex}-${linkIndex}` ? "var(--accent)" : "inherit",
+                          }}
+                        >
                           {link.name}
                         </span>
-                        <motion.div
-                          animate={{
-                            x: hoveredLink === `${sectionIndex}-${linkIndex}` ? 3 : 0,
-                            opacity: hoveredLink === `${sectionIndex}-${linkIndex}` ? 1 : 0
-                          }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ArrowUpRight size={14} style={{ color: 'var(--accent)' }} />
-                        </motion.div>
+                        <ArrowUpRight
+                          size={12}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          style={{ color: "var(--accent)" }}
+                          aria-hidden="true"
+                        />
                       </Link>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
-        {/* Social Links */}
-        <motion.div
-          className="flex justify-center mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex items-center gap-6">
-            {socialLinks.map((social, index) => {
+        {/* Social / Developer Links */}
+        <div className="flex items-center justify-between border-t pt-6 pb-4" style={{ borderColor: "var(--card-border)" }}>
+          <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+            Connect with our engineering team
+          </p>
+          <div className="flex items-center gap-3">
+            {socialLinks.map((social) => {
               const Icon = social.icon;
               return (
-                <motion.a
+                <a
                   key={social.name}
                   href={social.href}
-                  target={["WhatsApp", "Instagram", "GitHub"].includes(social.name) ? "_blank" : "_self"}
-                  rel={["WhatsApp", "Instagram", "GitHub"].includes(social.name) ? "noopener noreferrer" : undefined}
-                  className="w-12 h-12 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}
-                  whileHover={{
-                    scale: 1.1,
-                    backgroundColor: 'var(--accent)',
-                    transition: { duration: 0.2, delay: 0 }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="w-8 h-8 rounded-lg border flex items-center justify-center transition-colors"
+                  style={{
+                    backgroundColor: "var(--card-bg)",
+                    borderColor: "var(--card-border)",
+                    color: "var(--text-muted)",
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.5, delay: 0.8 + index * 0.1 }
-                  }}
-                  viewport={{ once: true }}
                 >
-                  <Icon
-                    size={20}
-                    style={{ color: 'var(--text-muted)' }}
-                    className="transition-colors duration-300"
-                  />
-                </motion.a>
+                  <Icon size={16} aria-hidden="true" />
+                </a>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Bottom Bar */}
-        <motion.div
-          className="border-t pt-8"
-          style={{ borderColor: 'var(--card-border)' }}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex flex-col items-center justify-between sm:flex-row gap-4">
-            <motion.p
-              className="text-sm flex items-center gap-2"
-              style={{ color: 'var(--text-muted)' }}
-              animate={{
-                opacity: [0.7, 1, 0.7],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              © 2024 Devshift. Made with
-              <motion.span
-                animate={{
-                  scale: [1, 1.2, 1],
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <Heart size={16} style={{ color: 'var(--accent)' }} />
-              </motion.span>
-              All rights reserved.
-            </motion.p>
+        {/* Bottom Bar - Statutory Corporate & Procurement Details */}
+        <div className="border-t pt-6" style={{ borderColor: "var(--card-border)" }}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style={{ color: "var(--text-muted)" }}>
+            <div className="text-center md:text-left">
+              <p className="font-semibold" style={{ color: "var(--foreground)" }}>
+                &copy; {new Date().getFullYear()} Devshift Digital Ltd. All rights reserved.
+              </p>
+              <p className="mt-1 text-[11px] leading-relaxed">
+                Registered in England &amp; Wales &middot; Crown Commercial Service Framework Ready &middot; Cyber Essentials Plus Certified &middot; WCAG 2.2 AA Conformance
+              </p>
+            </div>
 
-            <motion.div
-              className="flex items-center gap-6 text-sm"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1.2 }}
-              viewport={{ once: true }}
-            >
-              <Link
-                href="/privacy"
-                className="transition-colors duration-300"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                Privacy Policy
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+              <Link href="/contact" className="hover:underline transition-colors">
+                Accessibility Statement
               </Link>
-              <Link
-                href="/terms"
-                className="transition-colors duration-300"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                Terms of Service
+              <Link href="/contact" className="hover:underline transition-colors">
+                Social Value (PPN 06/20)
               </Link>
-            </motion.div>
+              <Link href="/contact" className="hover:underline transition-colors">
+                Carbon Reduction (PPN 06/21)
+              </Link>
+              <Link href="/contact" className="hover:underline transition-colors">
+                Privacy &amp; UK GDPR
+              </Link>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 }

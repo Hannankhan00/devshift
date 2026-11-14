@@ -6,26 +6,26 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Speed & SEO",
-    description: "We build websites and apps that are optimized for performance, scoring high on Lighthouse and ranking better on search engines.",
+    title: "GDS Service Standard & TCoP Aligned",
+    description: "End-to-end agile delivery across Discovery, Alpha, Beta, and Live phases conforming to Central Digital & Data Office (CDDO) and Technology Code of Practice standards.",
     icon: <Rocket />,
     area: "md:col-span-7",
   },
   {
-    title: "Expert Team",
-    description: "Work directly with our senior developers, designers, and AI specialists—no middle layers, just results.",
+    title: "Security Cleared & Vetted Teams",
+    description: "BPSS and SC-cleared software engineers, cloud architects, and delivery managers experienced in sensitive public sector workloads.",
     icon: <Users />,
     area: "md:col-span-5",
   },
   {
-    title: "Seamless Experience",
-    description: "From UI/UX to AI automation, we ensure every solution is intuitive, user-friendly, and future-proof.",
+    title: "Accessibility by Design (WCAG 2.2 AA)",
+    description: "Rigorous automated and user testing with assistive technologies to ensure full compliance with the Public Sector Bodies Accessibility Regulations (PSBAR 2018).",
     icon: <GitMerge />,
     area: "md:col-span-5",
   },
   {
-    title: "Ongoing Support",
-    description: "Get clear reports, smooth handovers, and dedicated support long after launch.",
+    title: "Social Value & Net Zero Commitment",
+    description: "Measurable commitments meeting PPN 06/20 (STEM apprenticeships, regional economic equality) and PPN 06/21 Carbon Reduction Plan targets.",
     icon: <LifeBuoy />,
     area: "md:col-span-7",
   },
@@ -123,7 +123,7 @@ export default function WhyChooseUs() {
                 transition: { duration: 0.3 }
               }}
             >
-              Why Choose Devshift
+              Why Public Sector Buyers Choose Devshift
             </motion.h2>
           </motion.div>
         </div>

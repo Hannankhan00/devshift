@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  /* Light theme */
+  /* Light theme - Public Sector High Contrast */
   --background: #ffffff;
-  --foreground: #000000;
+  --foreground: #0b0c0c;
   --card-bg: #f8fafc;
-  --card-border: #e2e8f0;
-  --text-muted: #64748b;
-  --accent: #4c00ff;
-  --accent-hover: #3b00cc;
+  --card-border: #d8dde0;
+  --text-muted: #505a5f;
+  --accent: #1d70b8;
+  --accent-hover: #003078;
 }
 
 .dark {
   /* Dark theme */
-  --background: #000000;
+  --background: #0b0c0c;
   --foreground: #ffffff;
-  --card-bg: #111827;
-  --card-border: #374151;
-  --text-muted: #9ca3af;
-  --accent: #4c00ff;
-  --accent-hover: #7c3aed;
+  --card-bg: #1e242b;
+  --card-border: #383f45;
+  --text-muted: #b1b4b6;
+  --accent: #1d70b8;
+  --accent-hover: #5694ca;
 }
 
 @theme inline {
@@ -33,12 +33,23 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Hide native cursor globally on desktop; show on mobile */
-@media (min-width: 768px) and (hover: hover) {
-  html, body, * {
-    cursor: none !important;
+/* Accessible focus ring for keyboard navigation */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Accessibility: Respect user reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

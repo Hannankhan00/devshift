@@ -2,7 +2,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import CustomCursor from "./components/custom-cursor";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ErrorBoundary from "./components/error-boundary";
@@ -18,13 +17,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Devshift - Professional Web Development Services",
-  description: "Expert web development, UI/UX design, and automation & AI solutions.",
-  keywords: "web development, UI/UX design, automation, AI",
-  authors: [{ name: "Devshift Team" }],
+  title: "Devshift | Digital Public Services & Software Engineering (UK Gov & Public Sector)",
+  description: "Devshift delivers secure, user-centred digital services aligned with GDS Service Standards, Cyber Essentials Plus, and WCAG 2.2 AA accessibility for UK Government & the wider public sector.",
+  keywords: "UK public sector, GDS service standard, Crown Commercial Service supplier, government software development, Cyber Essentials Plus, WCAG 2.2 accessibility, cloud transformation, NHS digital",
+  authors: [{ name: "Devshift Public Sector Team" }],
   openGraph: {
-    title: "Devshift - Professional Web Development Services",
-    description: "Expert web development, UI/UX design, and automation & AI solutions.",
+    title: "Devshift | Digital Public Services & Software Engineering",
+    description: "Secure, compliant, GDS-aligned digital solutions and software engineering for UK central government, local authorities, and the NHS.",
     type: "website",
   },
 };
@@ -36,7 +35,6 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
       >
         <ErrorBoundary>
-          <CustomCursor />
           <Header />
           <main className="pt-16">{children}</main>
           <Footer />

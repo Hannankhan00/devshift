@@ -1,4 +1,4 @@
-import HeroParticles from "./components/hero-particles";
+import Hero from "./components/hero";
 import Services from "./components/services";
 import Results from "./components/Results";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -8,15 +8,15 @@ import FinalCTA from "./components/FinalCTA";
 
 
 export const metadata = {
-    title: "Devshift",
-    description: "Professional web development, design, and automation services",
+    title: "Devshift | UK Public Sector Software Engineering & Digital Services",
+    description: "Secure, accessible, cloud-native digital public services for UK Government, NHS trusts, and local authorities aligned with GDS Service Standards.",
 };
 
 export default function HomePage() {
     return (
         <>
-            {/* Hero Section - Particles Effect */}
-            <HeroParticles />
+            {/* GovTech Accessible Hero */}
+            <Hero />
             
             {/* Services Section */}
             <Services />

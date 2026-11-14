@@ -202,30 +202,30 @@ export default function Results() {
   const metrics = [
     {
       icon: Zap,
-      value: <AnimatedCounter end={95} suffix="%" duration={2.8} />,
-      label: "Speed Improvement",
-      description: "Average performance boost across all projects",
+      value: <AnimatedCounter end={99.9} suffix="%" decimals={1} duration={2.8} />,
+      label: "Platform Availability",
+      description: "High-availability cloud engineering adhering to NCSC resilience standards",
       delay: 0.2
     },
     {
       icon: Users,
-      value: <AnimatedCounter end={150} suffix="+" duration={3.0} />,
-      label: "Happy Clients",
-      description: "Businesses transformed with our solutions",
+      value: <AnimatedCounter end={100} suffix="%" duration={3.0} />,
+      label: "WCAG 2.2 AA Conformance",
+      description: "Automated and assisted digital accessibility across citizen journeys",
       delay: 0.4
     },
     {
       icon: DollarSign,
-      value: <AnimatedCounter end={300} suffix="%" duration={3.2} />,
-      label: "Conversion Increase",
-      description: "Average improvement in user engagement",
+      value: <AnimatedCounter end={4.2} prefix="£" suffix="M+" decimals={1} duration={3.2} />,
+      label: "Public Value Delivered",
+      description: "Operational efficiency and taxpayer savings through cloud modernisation",
       delay: 0.6
     },
     {
-      icon: DollarSign,
-      value: <AnimatedCounter end={2.5} prefix="$" suffix="M+" decimals={1} duration={3.5} />,
-      label: "Revenue Generated",
-      description: "Total value created for our clients",
+      icon: Zap,
+      value: <AnimatedCounter end={14} suffix="/14" duration={3.5} />,
+      label: "GDS Standards Met",
+      description: "Full compliance across Central Digital & Data Office service assessments",
       delay: 0.8
     }
   ];
@@ -265,26 +265,21 @@ export default function Results() {
           variants={titleVariants}
         >
           <motion.h2
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
             style={{ color: 'var(--foreground)' }}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.3 }
-            }}
           >
-            Proven Results
+            Demonstrated Public Sector Outcomes
           </motion.h2>
           
           <motion.p
-            className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed"
             style={{ color: 'var(--text-muted)' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Real metrics from real projects. See how we&apos;ve transformed businesses 
-            with cutting-edge development and strategic solutions.
+            Delivering high availability, strict accessibility, and tangible taxpayer efficiency across public digital programmes.
           </motion.p>
         </motion.div>
 

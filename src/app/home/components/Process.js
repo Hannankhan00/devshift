@@ -7,49 +7,49 @@ const steps = [
   {
     id: "discovery",
     icon: Lightbulb,
-    title: "Discovery",
-    description: "Analyze goals, audience, and requirements to create your strategic roadmap.",
+    title: "1. Discovery",
+    description: "Understand citizen needs, policy constraints, and technology landscapes through user research.",
     position: { x: 200, y: 100 },
     row: "top"
   },
   {
-    id: "strategy",
+    id: "alpha",
     icon: Layers,
-    title: "Strategy",
-    description: "Comprehensive planning and architecture design for scalability and performance.",
+    title: "2. Alpha",
+    description: "Test architectural spikes, build rapid prototypes, and de-risk core technical assumptions.",
     position: { x: 600, y: 100 },
     featured: true,
     row: "top"
   },
   {
-    id: "development",
+    id: "beta-private",
     icon: Monitor,
-    title: "Development",
-    description: "Building secure solutions using cutting-edge technologies and best practices.",
+    title: "3. Private Beta",
+    description: "Build the secure, accessible software and test with an invited cohort of real public users.",
     position: { x: 1000, y: 100 },
     row: "top"
   },
   {
-    id: "quality",
+    id: "beta-public",
     icon: FlaskConical,
-    title: "Quality Assurance",
-    description: "Rigorous testing across all devices and browsers to ensure perfection.",
+    title: "4. Public Beta",
+    description: "Open the service to all citizens, pass GDS Service Assessments, and integrate GOV.UK APIs.",
     position: { x: 200, y: 560 },
     row: "bottom"
   },
   {
-    id: "deployment",
+    id: "live",
     icon: Rocket,
-    title: "Deployment",
-    description: "Seamless launch with zero downtime and comprehensive monitoring.",
+    title: "5. Live Delivery",
+    description: "Deploy to production with 99.95% availability, automated CI/CD, and NCSC-aligned security.",
     position: { x: 600, y: 560 },
     row: "bottom"
   },
   {
-    id: "maintenance",
+    id: "support",
     icon: Headphones,
-    title: "Support",
-    description: "Ongoing maintenance and dedicated support to keep everything running smoothly.",
+    title: "6. Continuous Value",
+    description: "Provide ongoing SRE support, iterative feature enhancements, and accessible citizen support.",
     position: { x: 1000, y: 560 },
     row: "bottom"
   },
@@ -373,16 +373,16 @@ export default function Process() {
       <div className="sticky top-20 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
             style={{ color: 'var(--foreground)' }}
           >
-            Our Process
+            GDS Agile Delivery Lifecycle
           </h2>
           <p 
-            className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed"
             style={{ color: 'var(--text-muted)' }}
           >
-            Follow our proven methodology from concept to completion
+            Guiding public sector digital programmes through every assessment gate from Discovery through to Live.
           </p>
         </div>
 

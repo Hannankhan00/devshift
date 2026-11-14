@@ -144,26 +144,21 @@ export default function FinalCTA() {
           </motion.div>
 
           <motion.h2
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
             style={{ color: 'var(--foreground)' }}
-            whileHover={{
-              scale: 1.05,
-              transition: { duration: 0.3 }
-            }}
           >
-            Let&apos;s Build Your Next Big Thing
+            Ready to Partner on Your Next Public Digital Service?
           </motion.h2>
 
           <motion.p
-            className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed mb-12"
+            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed mb-12"
             style={{ color: 'var(--text-muted)' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Ready to transform your vision into reality? Let&apos;s create something
-            extraordinary together.
+            Engage Devshift via Crown Commercial Service frameworks, G-Cloud, or mini-competitions to accelerate your GDS-aligned software delivery.
           </motion.p>
 
           {/* Primary CTA Button */}
@@ -174,12 +169,12 @@ export default function FinalCTA() {
             viewport={{ once: true }}
             className="relative inline-block"
           >
-            {/* Glowing effect behind button */}
+            {/* Subtle glow behind button */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-2xl"
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 blur-xl opacity-40"
               animate={{
-                opacity: [0.5, 0.8, 0.5],
-                scale: [1, 1.1, 1],
+                opacity: [0.3, 0.5, 0.3],
+                scale: [1, 1.05, 1],
               }}
               transition={{
                 duration: 2,
@@ -190,32 +185,14 @@ export default function FinalCTA() {
 
             <Link href="/contact">
               <motion.button
-                className="relative px-12 py-6 rounded-full font-bold text-lg text-white overflow-hidden group"
+                className="relative px-10 py-5 rounded-full font-bold text-base sm:text-lg text-white overflow-hidden group shadow-md"
                 style={{ backgroundColor: 'var(--accent)' }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
               >
-                {/* Button shine effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"
-                  animate={{
-                    x: ['-100%', '100%'],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                />
-
                 <span className="relative flex items-center gap-3">
-                  Start Your Project
-                  <motion.span
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                  >
-                    <ArrowRight size={24} />
-                  </motion.span>
+                  Procure via Frameworks
+                  <ArrowRight size={20} />
                 </span>
               </motion.button>
             </Link>
@@ -359,20 +336,12 @@ export default function FinalCTA() {
           transition={{ duration: 1, delay: 1.5 }}
           viewport={{ once: true }}
         >
-          <motion.p
-            className="text-lg"
+          <p
+            className="text-sm font-semibold tracking-wide uppercase"
             style={{ color: 'var(--text-muted)' }}
-            animate={{
-              opacity: [0.5, 1, 0.5],
-            }}
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
           >
-            🚀 Your success story starts here
-          </motion.p>
+            🛡️ Crown Commercial Service Aligned · Cyber Essentials Plus · WCAG 2.2 AA Compliant
+          </p>
         </motion.div>
       </div>
     </motion.section>
