@@ -198,7 +198,7 @@ export default function Header() {
                                 '--hover-bg': 'var(--accent-hover)'
                             }}
                         >
-                            Procure via Frameworks
+                            Start a Project
                         </Link>
                     </div>
 
@@ -344,7 +344,7 @@ export default function Header() {
                                         '--hover-bg': 'var(--accent-hover)'
                                     }}
                                 >
-                                    Procure via Frameworks
+                                    Start a Project
                                 </Link>
                             </div>
                         </motion.aside>

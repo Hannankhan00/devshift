@@ -8,14 +8,14 @@ import FinalCTA from "./components/FinalCTA";
 
 
 export const metadata = {
-    title: "Devshift | UK Public Sector Software Engineering & Digital Services",
-    description: "Secure, accessible, cloud-native digital public services for UK Government, NHS trusts, and local authorities aligned with GDS Service Standards.",
+    title: "Devshift | Software Development House & Digital Engineering Studio",
+    description: "Devshift is an agile software development house engineering scalable web platforms, cloud architectures, and digital products.",
 };
 
 export default function HomePage() {
     return (
         <>
-            {/* GovTech Accessible Hero */}
+            {/* Software House Animated Hero */}
             <Hero />
             
             {/* Services Section */}

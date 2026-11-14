@@ -147,7 +147,7 @@ export default function FinalCTA() {
             className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
             style={{ color: 'var(--foreground)' }}
           >
-            Ready to Partner on Your Next Public Digital Service?
+            Ready to Build Your Next Software Platform?
           </motion.h2>
 
           <motion.p
@@ -158,7 +158,7 @@ export default function FinalCTA() {
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Engage Devshift via Crown Commercial Service frameworks, G-Cloud, or mini-competitions to accelerate your GDS-aligned software delivery.
+            Partner with Devshift to engineer high-performance web platforms, custom cloud applications, and digital products built to scale.
           </motion.p>
 
           {/* Primary CTA Button */}
@@ -191,7 +191,7 @@ export default function FinalCTA() {
                 whileTap={{ scale: 0.97 }}
               >
                 <span className="relative flex items-center gap-3">
-                  Procure via Frameworks
+                  Start Your Project
                   <ArrowRight size={20} />
                 </span>
               </motion.button>
@@ -337,10 +337,10 @@ export default function FinalCTA() {
           viewport={{ once: true }}
         >
           <p
-            className="text-sm font-semibold tracking-wide uppercase"
+            className="text-xs sm:text-sm font-semibold tracking-wider uppercase font-mono"
             style={{ color: 'var(--text-muted)' }}
           >
-            🛡️ Crown Commercial Service Aligned · Cyber Essentials Plus · WCAG 2.2 AA Compliant
+            ⚡ Modern Tech Stacks · Clean Architecture · Scalable &amp; Secure Cloud Systems
           </p>
         </motion.div>
       </div>

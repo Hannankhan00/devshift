@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  /* Light theme - Public Sector High Contrast */
+  /* Light theme */
   --background: #ffffff;
-  --foreground: #0b0c0c;
+  --foreground: #000000;
   --card-bg: #f8fafc;
-  --card-border: #d8dde0;
-  --text-muted: #505a5f;
-  --accent: #1d70b8;
-  --accent-hover: #003078;
+  --card-border: #e2e8f0;
+  --text-muted: #64748b;
+  --accent: #4c00ff;
+  --accent-hover: #3b00cc;
 }
 
 .dark {
   /* Dark theme */
-  --background: #0b0c0c;
+  --background: #000000;
   --foreground: #ffffff;
-  --card-bg: #1e242b;
-  --card-border: #383f45;
-  --text-muted: #b1b4b6;
-  --accent: #1d70b8;
-  --accent-hover: #5694ca;
+  --card-bg: #111827;
+  --card-border: #374151;
+  --text-muted: #9ca3af;
+  --accent: #4c00ff;
+  --accent-hover: #7c3aed;
 }
 
 @theme inline {

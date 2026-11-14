@@ -1,40 +1,50 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ShieldCheck, 
   ArrowRight, 
-  FileText, 
-  Lock, 
-  CheckCircle2, 
-  Building2, 
-  Server,
-  Layers
+  Code2, 
+  Layers, 
+  ShieldCheck, 
+  Zap 
 } from "lucide-react";
 
-export default function Hero() {
-  const complianceBadges = [
-    { label: "Crown Commercial Service", sub: "Framework Supplier Ready", icon: Building2 },
-    { label: "Cyber Essentials Plus", sub: "NCSC Technical Standard", icon: Lock },
-    { label: "WCAG 2.2 AA & PSBAR", sub: "Accessibility Standard", icon: CheckCircle2 },
-    { label: "ISO 27001 & ISO 9001", sub: "Security & Quality Aligned", icon: ShieldCheck },
-  ];
+const ROTATING_LINES = [
+  { text: "Mission-Critical Web Platforms", tag: "Full-Stack Web" },
+  { text: "Scalable Cloud Architecture", tag: "Cloud Native" },
+  { text: "High-Performance Mobile Apps", tag: "iOS & Android" },
+  { text: "Enterprise Digital Systems", tag: "Custom Software" },
+  { text: "Intelligent AI & Automation", tag: "Machine Learning" }
+];
 
-  const deliveryMetrics = [
-    { value: "GDS Standard", label: "Discovery, Alpha, Beta & Live" },
-    { value: "BPSS & SC", label: "Security-Cleared Engineers" },
-    { value: "100% UK", label: "Data Sovereignty (London)" },
-    { value: "WCAG 2.2 AA", label: "Accessibility Guarantee" },
+export default function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % ROTATING_LINES.length);
+    }, 3200);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const currentItem = ROTATING_LINES[currentIndex];
+
+  const highlights = [
+    { title: "Clean Architecture", desc: "Maintainable, scalable codebases designed for long-term evolution", icon: Layers },
+    { title: "Enterprise Security", desc: "Rigorous standards, OWASP compliance, and secure cloud setups", icon: ShieldCheck },
+    { title: "High-Velocity Delivery", desc: "Agile sprints with transparent milestones and continuous deployment", icon: Zap },
   ];
 
   return (
     <section 
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28"
+      className="relative overflow-hidden pt-16 pb-20 md:pt-28 md:pb-32"
       style={{ backgroundColor: 'var(--background)' }}
     >
-      {/* Subtle accessible geometric grid background */}
+      {/* Subtle tech dot-grid background */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20"
         style={{
@@ -44,128 +54,99 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Top Public Sector Tag */}
-        <div className="flex justify-center">
-          <div 
-            className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold border shadow-xs"
-            style={{ 
-              backgroundColor: 'var(--card-bg)', 
-              borderColor: 'var(--card-border)',
-              color: 'var(--foreground)'
-            }}
-          >
-            <span className="flex h-2 w-2 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true" />
-            <span>UK Public Sector & Central Government Digital Engineering</span>
-          </div>
-        </div>
+      {/* Subtle ambient gradient aura in accent color */}
+      <div 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[380px] rounded-full blur-[130px] pointer-events-none opacity-20"
+        style={{ backgroundColor: 'var(--accent)' }}
+        aria-hidden="true"
+      />
 
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Hero Header */}
-        <div className="mt-8 text-center max-w-4xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto">
           <h1 
             id="hero-heading"
-            className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight"
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.15]"
             style={{ color: 'var(--foreground)' }}
           >
-            Digital Public Services & Software Engineering Built for <span style={{ color: 'var(--accent)' }}>UK Government</span>
+            We Engineer <br className="hidden sm:inline" />
+            <span className="inline-block relative min-h-[1.25em] align-top">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={currentItem.text}
+                  initial={{ y: 25, opacity: 0, filter: "blur(6px)" }}
+                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: -25, opacity: 0, filter: "blur(6px)" }}
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                  className="inline-block bg-gradient-to-r from-[var(--accent)] via-[#7c3aed] to-[#3b82f6] bg-clip-text text-transparent"
+                >
+                  {currentItem.text}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </h1>
 
           <p 
-            className="mt-6 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto"
+            className="mt-6 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
             style={{ color: 'var(--text-muted)' }}
           >
-            Devshift partners with central government departments, local authorities, and the NHS to deliver secure, accessible, cloud-native services aligned with the <strong>GDS Service Standard</strong> from Discovery through to Live.
+            Devshift is an agile software development house. We build robust, scalable web platforms, custom cloud applications, and intelligent digital products with clean architecture and modern engineering standards.
           </p>
 
           {/* Action CTAs */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/contact"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-semibold text-white rounded-lg shadow-sm transition-all duration-150 hover:opacity-95 focus-visible:outline-3"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white rounded-xl shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-3"
               style={{ backgroundColor: 'var(--accent)' }}
             >
-              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-              <span>Procure via Frameworks</span>
+              <span>Discuss Your Project</span>
               <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />
             </Link>
 
             <Link
               href="/services"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-medium rounded-lg border transition-all duration-150 focus-visible:outline-3"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold rounded-xl border transition-all duration-200 hover:bg-[var(--card-bg)] focus-visible:outline-3"
               style={{ 
                 backgroundColor: 'var(--card-bg)',
                 borderColor: 'var(--card-border)',
                 color: 'var(--foreground)'
               }}
             >
-              <Layers className="h-5 w-5" style={{ color: 'var(--accent)' }} aria-hidden="true" />
-              <span>Explore GDS Capabilities</span>
+              <Code2 className="h-4 w-4" style={{ color: 'var(--accent)' }} aria-hidden="true" />
+              <span>Explore Capabilities</span>
             </Link>
           </div>
-
-          {/* Secondary Sub-note */}
-          <p className="mt-3 text-xs" style={{ color: 'var(--text-muted)' }}>
-            Available via Direct Award and Further Competition on Crown Commercial Service Frameworks & Contracts Finder.
-          </p>
         </div>
 
-        {/* Accreditations & Standards Strip */}
-        <div className="mt-16 pt-10 border-t" style={{ borderColor: 'var(--card-border)' }}>
-          <p className="text-center text-xs font-semibold uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
-            Compliance & Technical Assurance Standards
-          </p>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {complianceBadges.map((badge, idx) => {
-              const Icon = badge.icon;
-              return (
+        {/* 3 Core Engineering Pillars */}
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {highlights.map((h, i) => {
+            const Icon = h.icon;
+            return (
+              <div 
+                key={i} 
+                className="p-6 rounded-2xl border transition-all duration-200 hover:-translate-y-1"
+                style={{
+                  backgroundColor: 'var(--card-bg)',
+                  borderColor: 'var(--card-border)'
+                }}
+              >
                 <div 
-                  key={idx}
-                  className="flex items-center gap-3 p-3.5 rounded-xl border transition-colors"
-                  style={{
-                    backgroundColor: 'var(--card-bg)',
-                    borderColor: 'var(--card-border)',
-                  }}
+                  className="flex h-11 w-11 items-center justify-center rounded-xl mb-4"
+                  style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 12%, transparent)' }}
                 >
-                  <div 
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-                    style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)' }}
-                  >
-                    <Icon className="h-5 w-5" style={{ color: 'var(--accent)' }} aria-hidden="true" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs sm:text-sm font-bold leading-tight" style={{ color: 'var(--foreground)' }}>
-                      {badge.label}
-                    </p>
-                    <p className="text-[11px] leading-tight mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                      {badge.sub}
-                    </p>
-                  </div>
+                  <Icon className="h-5 w-5" style={{ color: 'var(--accent)' }} aria-hidden="true" />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Public Sector Delivery Metrics */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {deliveryMetrics.map((metric, i) => (
-            <div 
-              key={i} 
-              className="p-4 rounded-xl border"
-              style={{
-                backgroundColor: 'var(--card-bg)',
-                borderColor: 'var(--card-border)'
-              }}
-            >
-              <div className="text-xl sm:text-2xl font-extrabold" style={{ color: 'var(--accent)' }}>
-                {metric.value}
+                <h3 className="text-base font-bold mb-2" style={{ color: 'var(--foreground)' }}>
+                  {h.title}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                  {h.desc}
+                </p>
               </div>
-              <div className="text-xs sm:text-sm font-medium mt-1" style={{ color: 'var(--text-muted)' }}>
-                {metric.label}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

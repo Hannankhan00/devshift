@@ -3,13 +3,13 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight, Terminal } from "lucide-react";
 
 export default function HeroParticles({
   className = "",
-  title = "Public Sector Digital Capabilities",
-  description = "User-centred, secure, and compliant digital software engineering aligned with the GDS Service Standard and Technology Code of Practice.",
-  ctaText = "Procure via Frameworks",
+  title = "Software Engineering & Digital Capabilities",
+  description = "Full-stack web engineering, custom cloud applications, and intelligent digital products built with clean code and modern standards.",
+  ctaText = "Start a Project",
   onCtaClick,
   ...props
 }) {
@@ -37,8 +37,8 @@ export default function HeroParticles({
             color: 'var(--foreground)'
           }}
         >
-          <ShieldCheck className="h-4 w-4" style={{ color: 'var(--accent)' }} aria-hidden="true" />
-          <span>Crown Commercial Service & GDS Service Standard Aligned</span>
+          <Terminal className="h-4 w-4" style={{ color: 'var(--accent)' }} aria-hidden="true" />
+          <span>Software House &amp; Digital Engineering Studio</span>
         </div>
 
         <h1

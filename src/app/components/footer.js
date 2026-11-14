@@ -2,36 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Github, Linkedin, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 export default function Footer() {
   const [hoveredLink, setHoveredLink] = useState(null);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-        duration: 0.6,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  };
 
   const socialLinks = [
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", label: "Devshift LinkedIn" },
@@ -136,7 +111,7 @@ export default function Footer() {
               }}
             >
               <ShieldCheck size={14} style={{ color: "var(--accent)" }} aria-hidden="true" />
-              <span>Cyber Essentials Plus &middot; Crown Commercial Service Aligned</span>
+              <span>Cyber Essentials Plus · Crown Commercial Service Aligned</span>
             </div>
           </div>
 
@@ -216,10 +191,10 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs" style={{ color: "var(--text-muted)" }}>
             <div className="text-center md:text-left">
               <p className="font-semibold" style={{ color: "var(--foreground)" }}>
-                &copy; {new Date().getFullYear()} Devshift Digital Ltd. All rights reserved.
+                © {new Date().getFullYear()} Devshift Digital Ltd. All rights reserved.
               </p>
               <p className="mt-1 text-[11px] leading-relaxed">
-                Registered in England &amp; Wales &middot; Crown Commercial Service Framework Ready &middot; Cyber Essentials Plus Certified &middot; WCAG 2.2 AA Conformance
+                Registered in England &amp; Wales · Crown Commercial Service Framework Ready · Cyber Essentials Plus Certified · WCAG 2.2 AA Conformance
               </p>
             </div>
 

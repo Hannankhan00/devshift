@@ -17,13 +17,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Devshift | Digital Public Services & Software Engineering (UK Gov & Public Sector)",
-  description: "Devshift delivers secure, user-centred digital services aligned with GDS Service Standards, Cyber Essentials Plus, and WCAG 2.2 AA accessibility for UK Government & the wider public sector.",
-  keywords: "UK public sector, GDS service standard, Crown Commercial Service supplier, government software development, Cyber Essentials Plus, WCAG 2.2 accessibility, cloud transformation, NHS digital",
-  authors: [{ name: "Devshift Public Sector Team" }],
+  title: "Devshift | Software Development House & Digital Product Studio",
+  description: "Devshift is an agile software development house. We build high-performance web platforms, custom cloud applications, and digital products with clean architecture.",
+  keywords: "software house, web development, cloud software engineering, digital products, custom software, enterprise applications",
+  authors: [{ name: "Devshift Team" }],
   openGraph: {
-    title: "Devshift | Digital Public Services & Software Engineering",
-    description: "Secure, compliant, GDS-aligned digital solutions and software engineering for UK central government, local authorities, and the NHS.",
+    title: "Devshift | Software Development House & Digital Product Studio",
+    description: "High-performance web platforms, custom cloud software, and digital products built with clean architecture.",
     type: "website",
   },
 };
