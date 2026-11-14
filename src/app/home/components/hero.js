@@ -1,17 +1,17 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { useState, useEffect } from "react";
+import React, { useSyncExternalStore } from "react";
 import HeroParticles from "./hero-particles.js";
 
-export default function Hero() {
-    const [accentColor, setAccentColor] = useState("#4c00ff");
+const emptySubscribe = () => () => {};
+const getAccentColor = () => {
+    if (typeof window === "undefined") return "#4c00ff";
+    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || "#4c00ff";
+};
+const getAccentColorServer = () => "#4c00ff";
 
-    useEffect(() => {
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-        if (color) {
-            setAccentColor(color);
-        }
-    }, []);
+export default function Hero() {
+    const accentColor = useSyncExternalStore(emptySubscribe, getAccentColor, getAccentColorServer);
 
     return (
     <section className="relative flex h-screen items-center justify-center overflow-hidden w-full"

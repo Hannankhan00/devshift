@@ -1,36 +1,30 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
+const subscribeResize = (callback) => {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+};
+const checkIsMobile = () => {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+         window.innerWidth < 768 || 
+         ('ontouchstart' in window) ||
+         (navigator.maxTouchPoints > 0);
+};
 
 export default function CustomCursor({ size = 26, lerp = 0.18 }) {
   const rafId = useRef(null);
   const target = useRef({ x: 0, y: 0 });
   const pos = useRef({ x: 0, y: 0 });
   const cursorRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const isMobile = useSyncExternalStore(subscribeResize, checkIsMobile, () => false);
   const [scale, setScale] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-
-    // Mobile detection function
-    const checkMobile = () => {
-      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-                            window.innerWidth < 768 || 
-                            ('ontouchstart' in window) ||
-                            (navigator.maxTouchPoints > 0);
-      setIsMobile(isMobileDevice);
-    };
-
-    // Initial check
-    checkMobile();
-
-    // Check on resize
-    const handleResize = () => {
-      checkMobile();
-    };
-
     // Only set up cursor functionality if not mobile
     if (!isMobile) {
       const handlePointerMove = (e) => {
@@ -72,15 +66,8 @@ export default function CustomCursor({ size = 26, lerp = 0.18 }) {
         window.removeEventListener("pointermove", handlePointerMove);
         window.removeEventListener("mouseover", handleMouseEnter);
         window.removeEventListener("mouseout", handleMouseLeave);
-        window.removeEventListener("resize", handleResize);
       };
     }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, [lerp, size, isMobile, scale]);
 
   if (!isMounted || isMobile) return null;

@@ -6,13 +6,13 @@ import { Zap, Users, DollarSign } from "lucide-react";
 // Enhanced Animated Counter Component
 const AnimatedCounter = ({ end, duration = 2.5, suffix = "", prefix = "", decimals = 0 }) => {
   const [count, setCount] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const hasAnimated = useRef(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
-    if (isInView && !isAnimating) {
-      setIsAnimating(true);
+    if (isInView && !hasAnimated.current) {
+      hasAnimated.current = true;
       
       let startTime;
       const startValue = 0;
@@ -39,11 +39,13 @@ const AnimatedCounter = ({ end, duration = 2.5, suffix = "", prefix = "", decima
       };
       
       // Small delay for better visual effect
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         requestAnimationFrame(animate);
       }, 300);
+
+      return () => clearTimeout(timer);
     }
-  }, [isInView, end, duration, decimals, isAnimating]);
+  }, [isInView, end, duration, decimals]);
 
   return (
     <motion.span 

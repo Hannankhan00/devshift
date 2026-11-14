@@ -1,32 +1,33 @@
 "use client";
 
 import { Moon, SunDim } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
 import { cn } from "@/lib/utils";
 
-export default function ThemeToggle({ className }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const buttonRef = useRef(null);
+const subscribeTheme = (callback) => {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+};
+const getThemeSnapshot = () => document.documentElement.classList.contains("dark");
+const getThemeServerSnapshot = () => false;
 
-  useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark);
-  }, []);
+export default function ThemeToggle({ className }) {
+  const isDarkMode = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
+  const buttonRef = useRef(null);
 
   const changeTheme = async () => {
     if (!buttonRef.current) return;
 
     if (!document.startViewTransition) {
-        const dark = document.documentElement.classList.toggle("dark");
-        setIsDarkMode(dark);
+        document.documentElement.classList.toggle("dark");
         return;
     }
 
     await document.startViewTransition(() => {
       flushSync(() => {
-        const dark = document.documentElement.classList.toggle("dark");
-        setIsDarkMode(dark);
+        document.documentElement.classList.toggle("dark");
       });
     }).ready;
 

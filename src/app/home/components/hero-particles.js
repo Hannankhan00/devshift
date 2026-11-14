@@ -60,21 +60,14 @@ export default function HeroParticles({
   const pointerVelocity = useRef({ x: 0, y: 0 });
   const lastPointerPos = useRef({ x: 0, y: 0 });
   const hasLastPointer = useRef(false);
-  const [accentColor, setAccentColor] = useState(color);
 
-  useEffect(() => {
-    if (color !== "#ffffff") {
-      setAccentColor(color);
-      return;
-    }
+  const computedColor = color !== "#ffffff"
+    ? color
+    : (typeof window !== "undefined"
+        ? getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || "#ffffff"
+        : "#ffffff");
 
-    const cssAccent = getComputedStyle(document.documentElement)
-      .getPropertyValue('--accent')
-      .trim();
-    if (cssAccent) setAccentColor(cssAccent);
-  }, [color]);
-
-  const rgb = hexToRgb(accentColor);
+  const rgb = hexToRgb(computedColor);
 
   const circleParams = useCallback(() => {
     const x = Math.floor(Math.random() * canvasSize.current.w);
@@ -214,81 +207,82 @@ export default function HeroParticles({
     return remapped > 0 ? remapped : 0;
   };
 
-  const animate = useCallback(() => {
-    clearContext();
-    // Smoothly reset target when pointer leaves
-    if (!isPointerInside.current) {
-      mouse.current.x += (0 - mouse.current.x) / Math.max(ease, 1);
-      mouse.current.y += (0 - mouse.current.y) / Math.max(ease, 1);
-    } else {
-      applyPendingPointer();
-    }
-    // Apply global drift to all particles based on pointer velocity
-    const driftX = pointerVelocity.current.x * followStrength;
-    const driftY = pointerVelocity.current.y * followStrength;
-    circles.current.forEach((circle, i) => {
-      const edge = [
-        circle.x + circle.translateX - circle.size,
-        canvasSize.current.w - circle.x - circle.translateX - circle.size,
-        circle.y + circle.translateY - circle.size,
-        canvasSize.current.h - circle.y - circle.translateY - circle.size,
-      ];
-      const closestEdge = edge.reduce((a, b) => Math.min(a, b));
-      const remapClosestEdge = parseFloat(
-        remapValue(closestEdge, 0, 20, 0, 1).toFixed(2),
-      );
-      if (remapClosestEdge > 1) {
-        circle.alpha += 0.02;
-        if (circle.alpha > circle.targetAlpha) {
-          circle.alpha = circle.targetAlpha;
-        }
-      } else {
-        circle.alpha = circle.targetAlpha * remapClosestEdge;
-      }
-      circle.x += circle.dx + vx;
-      circle.y += circle.dy + vy;
-      circle.translateX += driftX;
-      circle.translateY += driftY;
-      // Cursor attraction similar to demo: stronger when closer to cursor
-      const mx = mouse.current.x;
-      const my = mouse.current.y;
-      const toMouseX = circle.x + circle.translateX - (canvasSize.current.w / 2 + mx);
-      const toMouseY = circle.y + circle.translateY - (canvasSize.current.h / 2 + my);
-      const dist = Math.hypot(toMouseX, toMouseY);
-      const influence = Math.max(0, 1 - dist / Math.max(mouseRadius, 1));
-      const attractionX = (mx * mouseStrength) * influence;
-      const attractionY = (my * mouseStrength) * influence;
-
-      const denom = staticity / circle.magnetism;
-      const targetX = mx / denom + attractionX;
-      const targetY = my / denom + attractionY;
-      circle.translateX += (targetX - circle.translateX) / ease;
-      circle.translateY += (targetY - circle.translateY) / ease;
-
-      drawCircle(circle, true);
-
-      if (
-        circle.x < -circle.size ||
-        circle.x > canvasSize.current.w + circle.size ||
-        circle.y < -circle.size ||
-        circle.y > canvasSize.current.h + circle.size
-      ) {
-        circles.current.splice(i, 1);
-        const newCircle = circleParams();
-        drawCircle(newCircle);
-      }
-    });
-    // Decay global drift over time for natural easing
-    pointerVelocity.current.x *= 0.9;
-    pointerVelocity.current.y *= 0.9;
-    rafID.current = window.requestAnimationFrame(animate);
-  }, [clearContext, vx, vy, staticity, ease, circleParams, drawCircle, applyPendingPointer, followStrength, mouseRadius, mouseStrength]);
-
   useEffect(() => {
     if (canvasRef.current) {
       context.current = canvasRef.current.getContext("2d");
     }
     initCanvas();
+
+    function animate() {
+      clearContext();
+      // Smoothly reset target when pointer leaves
+      if (!isPointerInside.current) {
+        mouse.current.x += (0 - mouse.current.x) / Math.max(ease, 1);
+        mouse.current.y += (0 - mouse.current.y) / Math.max(ease, 1);
+      } else {
+        applyPendingPointer();
+      }
+      // Apply global drift to all particles based on pointer velocity
+      const driftX = pointerVelocity.current.x * followStrength;
+      const driftY = pointerVelocity.current.y * followStrength;
+      circles.current.forEach((circle, i) => {
+        const edge = [
+          circle.x + circle.translateX - circle.size,
+          canvasSize.current.w - circle.x - circle.translateX - circle.size,
+          circle.y + circle.translateY - circle.size,
+          canvasSize.current.h - circle.y - circle.translateY - circle.size,
+        ];
+        const closestEdge = edge.reduce((a, b) => Math.min(a, b));
+        const remapClosestEdge = parseFloat(
+          remapValue(closestEdge, 0, 20, 0, 1).toFixed(2),
+        );
+        if (remapClosestEdge > 1) {
+          circle.alpha += 0.02;
+          if (circle.alpha > circle.targetAlpha) {
+            circle.alpha = circle.targetAlpha;
+          }
+        } else {
+          circle.alpha = circle.targetAlpha * remapClosestEdge;
+        }
+        circle.x += circle.dx + vx;
+        circle.y += circle.dy + vy;
+        circle.translateX += driftX;
+        circle.translateY += driftY;
+        // Cursor attraction similar to demo: stronger when closer to cursor
+        const mx = mouse.current.x;
+        const my = mouse.current.y;
+        const toMouseX = circle.x + circle.translateX - (canvasSize.current.w / 2 + mx);
+        const toMouseY = circle.y + circle.translateY - (canvasSize.current.h / 2 + my);
+        const dist = Math.hypot(toMouseX, toMouseY);
+        const influence = Math.max(0, 1 - dist / Math.max(mouseRadius, 1));
+        const attractionX = (mx * mouseStrength) * influence;
+        const attractionY = (my * mouseStrength) * influence;
+
+        const denom = staticity / circle.magnetism;
+        const targetX = mx / denom + attractionX;
+        const targetY = my / denom + attractionY;
+        circle.translateX += (targetX - circle.translateX) / ease;
+        circle.translateY += (targetY - circle.translateY) / ease;
+
+        drawCircle(circle, true);
+
+        if (
+          circle.x < -circle.size ||
+          circle.x > canvasSize.current.w + circle.size ||
+          circle.y < -circle.size ||
+          circle.y > canvasSize.current.h + circle.size
+        ) {
+          circles.current.splice(i, 1);
+          const newCircle = circleParams();
+          drawCircle(newCircle);
+        }
+      });
+      // Decay global drift over time for natural easing
+      pointerVelocity.current.x *= 0.9;
+      pointerVelocity.current.y *= 0.9;
+      rafID.current = window.requestAnimationFrame(animate);
+    }
+
     animate();
 
     const handleResize = () => {
@@ -320,7 +314,21 @@ export default function HeroParticles({
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerleave", handleWindowPointerLeave);
     };
-  }, [accentColor, initCanvas, animate, onPointerMove]);
+  }, [
+    initCanvas,
+    onPointerMove,
+    clearContext,
+    ease,
+    applyPendingPointer,
+    followStrength,
+    vx,
+    vy,
+    mouseRadius,
+    mouseStrength,
+    staticity,
+    drawCircle,
+    circleParams,
+  ]);
 
   useEffect(() => {
     initCanvas();
