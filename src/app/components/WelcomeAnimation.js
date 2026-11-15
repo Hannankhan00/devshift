@@ -17,7 +17,7 @@ export default function WelcomeAnimation() {
     return null;
   }
 
-  const text = "Devshift";
+  const text = "Technoad";
 
   return (
     <motion.div

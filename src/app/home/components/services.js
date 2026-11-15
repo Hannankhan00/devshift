@@ -1,413 +1,483 @@
 "use client";
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 
-// Utility function for className merging
-function cn(...classes) {
-  return classes.filter(Boolean).join(' ');
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Check, Cloud, Sparkles } from "lucide-react";
+
+/* ----------------------------- Illustrations ----------------------------- */
+/* Theme-aware visuals built from the site's CSS variables (light + dark). */
+
+const line = (w, strong = false) => (
+  <div
+    className="h-1.5 rounded-full"
+    style={{
+      width: w,
+      backgroundColor: strong ? "var(--accent)" : "var(--card-border)",
+      opacity: strong ? 0.9 : 1,
+    }}
+  />
+);
+
+const panel = {
+  backgroundColor: "var(--background)",
+  borderColor: "var(--card-border)",
+};
+
+function BillingArt() {
+  const rows = [
+    ["60%", "$"],
+    ["45%", "$"],
+    ["70%", "$"],
+  ];
+  return (
+    <div className="relative w-[64%]">
+      <div className="overflow-hidden rounded-xl border shadow-xl" style={panel}>
+        <div className="flex items-center justify-between border-b px-3 py-2.5" style={{ borderColor: "var(--card-border)" }}>
+          <div className="flex items-center gap-2">
+            <span
+              className="flex h-5 w-5 items-center justify-center rounded-md text-xs font-bold leading-none text-white"
+              style={{ backgroundColor: "var(--accent)" }}
+            >
+              +
+            </span>
+            {line("48px", true)}
+          </div>
+          <span className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
+            CLAIM #2041
+          </span>
+        </div>
+        <div className="space-y-2.5 p-3.5">
+          {rows.map(([w], i) => (
+            <div key={i} className="flex items-center justify-between gap-3">
+              <div className="flex-1 space-y-1.5">
+                {line(w)}
+                {line("35%")}
+              </div>
+              <div className="h-2 w-10 rounded-full" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 30%, transparent)" }} />
+            </div>
+          ))}
+          <div className="flex items-center justify-between border-t pt-2.5" style={{ borderColor: "var(--card-border)" }}>
+            {line("30%")}
+            <div className="h-2.5 w-14 rounded-full" style={{ backgroundColor: "var(--accent)" }} />
+          </div>
+        </div>
+      </div>
+      <span
+        className="absolute -bottom-3 -right-4 flex items-center gap-1 rounded-lg border px-2 py-1 font-mono text-[10px] font-semibold shadow-md"
+        style={{ ...panel, color: "var(--foreground)" }}
+      >
+        <Check size={10} className="text-emerald-500" aria-hidden="true" />
+        Paid
+      </span>
+    </div>
+  );
 }
 
-const ServiceCard = ({ title, description, icon, gradient, delay = 0, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-      rotateX: 15
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.8,
-        delay: delay,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
-  };
-
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        delay: delay + 0.3
-      }
-    }
-  };
-
-  const hoverVariants = {
-    hover: {
-      y: -10,
-      scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20
-      }
-    }
-  };
-
+function MobileArt() {
   return (
-    <motion.div
-      className="relative group cursor-pointer"
-      style={{ perspective: '1000px' }}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      whileHover="hover"
-      animate={hoverVariants}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border transition-all duration-700 shadow-2xl h-full" style={{ backgroundColor: isHovered ? 'var(--accent)' : 'var(--card-bg)', borderColor: 'var(--card-border)' }}>
-
-        <motion.div
-          className="absolute inset-0 opacity-0"
-          style={{ background: gradient }}
-          animate={{ opacity: isHovered ? 0.1 : 0 }}
-          transition={{ duration: 0.5 }}
-        />
-
-        <motion.div
-          className="absolute top-4 right-4 w-20 h-20 rounded-full blur-xl"
-          style={{ backgroundColor: 'var(--accent)', opacity: 0.1 }}
-          animate={{
-            x: isHovered ? [0, 10, -10, 0] : 0,
-            y: isHovered ? [0, -5, 5, 0] : 0
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
-        <motion.div
-          className="relative z-10 p-8 h-full flex flex-col"
-          variants={contentVariants}
-        >
-          <motion.div
-            className="mb-6"
-            whileHover={{
-              rotate: [0, -5, 5, 0],
-              scale: 1.1
-            }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="w-16 h-16 rounded-2xl backdrop-blur-sm border flex items-center justify-center shadow-lg transition-colors duration-300"
-              style={{
-                backgroundColor: isHovered ? 'var(--accent)' : 'var(--card-bg)',
-                borderColor: 'var(--card-border)'
-              }}>
-              <motion.div
-                animate={{
-                  scale: isHovered ? 1.1 : 1
-                }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  color: isHovered ? '#ffffff' : 'var(--accent)'
-                }}
-              >
-                {icon}
-              </motion.div>
+    <div className="relative flex items-center justify-center">
+      <div className="h-44 w-24 rounded-[1.4rem] border-2 p-2 shadow-xl" style={panel}>
+        <div className="mx-auto mb-2 h-1 w-8 rounded-full" style={{ backgroundColor: "var(--card-border)" }} />
+        <div className="mb-2 h-10 rounded-xl" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 18%, transparent)" }} />
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="mb-1.5 flex items-center gap-1.5">
+            <div className="h-5 w-5 shrink-0 rounded-md" style={{ backgroundColor: "var(--card-border)" }} />
+            <div className="flex-1 space-y-1">
+              {line("90%")}
+              {line("55%")}
             </div>
-          </motion.div>
-
-          <motion.h3
-            className="text-2xl font-bold mb-4 leading-tight"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delay + 0.4 }}
-            style={{ color: isHovered ? 'white' : 'var(--foreground)' }}
-          >
-            {title}
-          </motion.h3>
-
-          <motion.p
-            className="leading-relaxed flex-grow text-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delay + 0.5 }}
-            style={{ color: isHovered ? 'white' : 'var(--text-muted)' }}
-          >
-            {description}
-          </motion.p>
-
-          <motion.div
-            className="mt-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{
-              opacity: isHovered ? 1 : 0.7,
-              x: isHovered ? 0 : -10
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <span className="inline-flex items-center font-medium text-sm tracking-wide uppercase transition-colors" style={{ color: isHovered ? 'white' : 'var(--accent)' }}>
-              Learn More
-              <motion.span
-                className="ml-2"
-                animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                →
-              </motion.span>
-            </span>
-          </motion.div>
-        </motion.div>
-
+          </div>
+        ))}
+        <div className="mt-2 h-5 rounded-lg" style={{ backgroundColor: "var(--accent)" }} />
       </div>
-    </motion.div>
+      <div className="absolute -right-10 top-4 h-32 w-20 rotate-6 rounded-[1.2rem] border-2 p-2 opacity-70 shadow-lg" style={panel}>
+        <div className="mb-2 h-8 rounded-lg" style={{ backgroundColor: "var(--card-border)" }} />
+        {line("80%")}
+        <div className="mt-1.5">{line("50%")}</div>
+      </div>
+    </div>
   );
-};
+}
 
-// Enhanced SVG Icons with Animation
-const WebDevIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-    <motion.path
-      d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      initial={{ pathLength: 0 }}
-      animate={{ pathLength: 1 }}
-      transition={{ duration: 2, ease: "easeInOut" }}
-    />
-  </svg>
-);
+function DesignArt() {
+  return (
+    <div className="relative h-40 w-[70%] rounded-xl border shadow-xl" style={panel}>
+      <div className="absolute left-4 top-4 h-14 w-14 rounded-2xl" style={{ backgroundColor: "var(--accent)" }} />
+      <div className="absolute left-20 top-9 h-12 w-12 rounded-full" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 35%, transparent)" }} />
+      <div
+        className="absolute bottom-5 right-6 h-0 w-0"
+        style={{
+          borderLeft: "26px solid transparent",
+          borderRight: "26px solid transparent",
+          borderBottom: "46px solid #3b82f6",
+          opacity: 0.85,
+        }}
+      />
+      {/* selection box */}
+      <div className="absolute left-3 top-3 h-16 w-16 rounded-md border border-dashed" style={{ borderColor: "var(--accent)" }}>
+        {[["-left-1", "-top-1"], ["-right-1", "-top-1"], ["-left-1", "-bottom-1"], ["-right-1", "-bottom-1"]].map(([x, y], i) => (
+          <span key={i} className={`absolute ${x} ${y} h-1.5 w-1.5 rounded-[2px] border bg-white`} style={{ borderColor: "var(--accent)" }} />
+        ))}
+      </div>
+      {/* palette */}
+      <div className="absolute bottom-3 left-4 flex gap-1.5">
+        {["var(--accent)", "#3b82f6", "#10b981", "#f59e0b"].map((c) => (
+          <span key={c} className="h-3.5 w-3.5 rounded-full border" style={{ backgroundColor: c, borderColor: "var(--background)" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-const AppDevIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-    <motion.rect
-      x="2" y="3" width="20" height="14" rx="2" ry="2"
-      stroke="currentColor" strokeWidth="2" fill="none"
-      initial={{ pathLength: 0 }}
-      animate={{ pathLength: 1 }}
-      transition={{ duration: 1.5, ease: "easeInOut" }}
-    />
-    <motion.line
-      x1="8" y1="21" x2="16" y2="21"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-      initial={{ pathLength: 0 }}
-      animate={{ pathLength: 1 }}
-      transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }}
-    />
-    <motion.line
-      x1="12" y1="17" x2="12" y2="21"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-      initial={{ pathLength: 0 }}
-      animate={{ pathLength: 1 }}
-      transition={{ duration: 1, delay: 0.7, ease: "easeInOut" }}
-    />
-  </svg>
-);
+function AiArt() {
+  return (
+    <div className="w-[72%] space-y-2.5">
+      <div className="ml-auto w-[70%] rounded-2xl rounded-br-sm px-3 py-2.5 shadow-md" style={{ backgroundColor: "var(--accent)" }}>
+        <div className="space-y-1.5">
+          <div className="h-1.5 w-full rounded-full bg-white/80" />
+          <div className="h-1.5 w-2/3 rounded-full bg-white/60" />
+        </div>
+      </div>
+      <div className="flex items-start gap-2">
+        <span
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+          style={{ backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)", color: "var(--accent)" }}
+        >
+          <Sparkles size={12} aria-hidden="true" />
+        </span>
+        <div className="w-[78%] space-y-1.5 rounded-2xl rounded-tl-sm border px-3 py-2.5 shadow-md" style={panel}>
+          {line("100%")}
+          {line("85%")}
+          {line("55%", true)}
+        </div>
+      </div>
+      <div className="ml-8 flex gap-1">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="h-1.5 w-1.5 animate-pulse rounded-full"
+            style={{ backgroundColor: "var(--accent)", animationDelay: `${i * 200}ms` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-const DesignIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-    <motion.path
-      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      initial={{ pathLength: 0, scale: 0 }}
-      animate={{ pathLength: 1, scale: 1 }}
-      transition={{ duration: 2, ease: "easeInOut" }}
-    />
-  </svg>
-);
+function CloudArt() {
+  return (
+    <div className="relative h-44 w-[75%]">
+      <svg viewBox="0 0 240 160" className="absolute inset-0 h-full w-full" fill="none" aria-hidden="true">
+        {[[40, 130], [120, 140], [200, 130]].map(([x, y], i) => (
+          <line key={i} x1="120" y1="62" x2={x} y2={y - 18} stroke="var(--accent)" strokeOpacity="0.45" strokeWidth="1.5" strokeDasharray="4 4" />
+        ))}
+      </svg>
+      <div
+        className="absolute left-1/2 top-2 flex h-16 w-24 -translate-x-1/2 items-center justify-center rounded-2xl border shadow-xl"
+        style={panel}
+      >
+        <Cloud size={30} style={{ color: "var(--accent)" }} aria-hidden="true" />
+      </div>
+      {[
+        ["8%", "Build"],
+        ["38%", "Test"],
+        ["68%", "Deploy"],
+      ].map(([left, label]) => (
+        <div
+          key={label}
+          className="absolute bottom-2 flex items-center gap-1 rounded-lg border px-2 py-1.5 text-[10px] font-mono font-semibold shadow-md"
+          style={{ ...panel, left, color: "var(--foreground)" }}
+        >
+          <Check size={10} className="text-emerald-500" aria-hidden="true" />
+          {label}
+        </div>
+      ))}
+    </div>
+  );
+}
 
-const AiIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-    <motion.path
-      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      stroke="currentColor"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      initial={{ pathLength: 0, rotate: -180 }}
-      animate={{ pathLength: 1, rotate: 0 }}
-      transition={{ duration: 2, ease: "easeInOut" }}
-    />
-    <motion.circle
-      cx="12" cy="8" r="1"
-      fill="currentColor"
-      initial={{ scale: 0 }}
-      animate={{ scale: [0, 1.2, 1] }}
-      transition={{ duration: 1, delay: 1, ease: "easeOut" }}
-    />
-  </svg>
-);
-
-// Floating Background Elements
-const FloatingElements = () => {
-  // Fixed values to prevent hydration mismatch
-  const elements = [
-    { width: 120, height: 180, left: 15, top: 20, duration: 25, delay: 2 },
-    { width: 200, height: 150, left: 80, top: 60, duration: 30, delay: 5 },
-    { width: 160, height: 200, left: 70, top: 10, duration: 28, delay: 1 },
-    { width: 180, height: 140, left: 20, top: 70, duration: 32, delay: 3 },
-    { width: 140, height: 190, left: 90, top: 30, duration: 26, delay: 4 },
-    { width: 100, height: 160, left: 5, top: 50, duration: 29, delay: 0 }
+function CustomArt() {
+  const rows = [
+    ["14%", "var(--accent)"],
+    ["52%", "#3b82f6"],
+    ["36%", "var(--card-border)"],
+    ["64%", "#10b981"],
+    ["28%", "var(--card-border)"],
   ];
+  return (
+    <div className="relative w-[72%]">
+      <div className="overflow-hidden rounded-xl border shadow-xl" style={panel}>
+        <div className="flex items-center gap-1.5 border-b px-3 py-2" style={{ borderColor: "var(--card-border)" }}>
+          <span className="h-2 w-2 rounded-full bg-red-400/80" />
+          <span className="h-2 w-2 rounded-full bg-amber-400/80" />
+          <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+          <span className="ml-3 font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
+            api/orders.ts
+          </span>
+        </div>
+        <div className="space-y-2 p-4">
+          {rows.map(([w, c], i) => (
+            <div key={i} className="flex items-center gap-2" style={{ paddingLeft: i % 2 ? 14 : 0 }}>
+              <div className="h-1.5 rounded-full" style={{ width: "18%", backgroundColor: "var(--card-border)" }} />
+              <div className="h-1.5 rounded-full" style={{ width: w, backgroundColor: c }} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <span
+        className="absolute -bottom-3 -right-3 rounded-lg border px-2 py-1 font-mono text-[10px] font-semibold shadow-md"
+        style={{ ...panel, color: "var(--accent)" }}
+      >
+        200 OK
+      </span>
+    </div>
+  );
+}
+
+/* ----------------------------- Content ----------------------------- */
+
+const SERVICES = [
+  {
+    id: "ai",
+    title: "AI-Driven Solutions",
+    summary: "Practical AI assistants, intelligent automation and data-driven tools that remove repetitive manual work.",
+    tags: ["LLM","Python","Automation"],
+    href: "/services/automation",
+    Art: AiArt,
+  },
+  {
+    id: "mobile",
+    title: "Mobile App Development",
+    summary: "Polished iOS and Android apps from a single maintainable codebase, ready for the stores.",
+    tags: ["React Native","Flutter","Swift"],
+    href: "/services/app",
+    Art: MobileArt,
+  },
+  {
+    id: "custom",
+    title: "Software Development Solutions",
+    summary: "Bespoke systems, APIs and integrations built around the way your business actually works.",
+    tags: ["APIs","Integrations","SaaS"],
+    href: "/services",
+    Art: CustomArt,
+  },
+  {
+    id: "billing",
+    title: "Medical Billing",
+    summary: "End-to-end billing and revenue cycle management: accurate claims, fewer denials and faster payments.",
+    tags: ["Claims", "Coding", "Denial Management"],
+    href: "/services",
+    Art: BillingArt,
+  },
+  {
+    id: "design",
+    title: "UI/UX Design",
+    summary: "Research-led interfaces and design systems, validated with real users before development.",
+    tags: ["Figma","Prototyping","Design Systems"],
+    href: "/services/design",
+    Art: DesignArt,
+  },
+  {
+    id: "cloud",
+    title: "Cloud & DevOps",
+    summary: "Secure, observable infrastructure with automated pipelines so releases stay routine.",
+    tags: ["AWS","Docker","CI/CD"],
+    href: "/services",
+    Art: CloudArt,
+  },
+];
+
+const EASE = [0.22, 1, 0.36, 1];
+
+/* ------------------------------ Card ------------------------------- */
+
+function ServiceCard({ service, index }) {
+  const { Art, image } = service;
 
   return (
-    <>
-      {elements.map((element, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full blur-xl"
+    <motion.li
+      className="list-none"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.8, delay: (index % 3) * 0.1, ease: EASE }}
+    >
+      <Link
+        href={service.href}
+        onMouseMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+          e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+        }}
+        className="group relative flex h-full flex-col overflow-hidden rounded-3xl border transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1.5 hover:shadow-2xl"
+        style={{ backgroundColor: "var(--card-bg)", borderColor: "var(--card-border)" }}
+        aria-label={`${service.title}: learn more`}
+      >
+        {/* cursor spotlight */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style={{
-            width: element.width,
-            height: element.height,
-            left: `${element.left}%`,
-            top: `${element.top}%`,
-            backgroundColor: 'var(--accent)',
-            opacity: 0.1
-          }}
-          animate={{
-            x: [0, 100, -50, 0],
-            y: [0, -100, 50, 0],
-            scale: [1, 1.2, 0.8, 1],
-          }}
-          transition={{
-            duration: element.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: element.delay,
+            background:
+              "radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%)",
           }}
         />
-      ))}
-    </>
+
+          {/* Image area */}
+          <div
+            className="relative flex aspect-[16/10] items-center justify-center overflow-hidden"
+            style={{
+              background:
+                "linear-gradient(135deg, color-mix(in srgb, var(--accent) 16%, var(--card-bg)) 0%, var(--card-bg) 100%)",
+            }}
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 opacity-50"
+              style={{
+                backgroundImage: "radial-gradient(var(--card-border) 1px, transparent 1px)",
+                backgroundSize: "18px 18px",
+              }}
+            />
+            {image ? (
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            ) : (
+              <div className="relative flex h-full w-full items-center justify-center transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+                <Art />
+              </div>
+            )}
+            <span
+              className="absolute left-4 top-4 rounded-full border px-2.5 py-1 font-mono text-[11px] font-semibold"
+              style={{ backgroundColor: "var(--background)", borderColor: "var(--card-border)", color: "var(--accent)" }}
+            >
+              0{index + 1}
+            </span>
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-1 flex-col p-6">
+            <h3 className="text-xl font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
+              {service.title}
+            </h3>
+            <p className="mt-2 flex-1 text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+              {service.summary}
+            </p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {service.tags.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border px-2.5 py-1 font-mono text-[11px]"
+                  style={{ borderColor: "var(--card-border)", backgroundColor: "var(--background)", color: "var(--text-muted)" }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <span
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold"
+              style={{ color: "var(--accent)" }}
+            >
+              Learn more
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true" />
+            </span>
+          </div>
+      </Link>
+    </motion.li>
   );
-};
+}
+
+/* ------------------------------ Main ------------------------------- */
 
 export default function Services() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        duration: 0.6
-      }
-    }
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
-  };
-
-  const services = [
-    {
-      title: "GDS Cloud & Web Engineering",
-      description: "Secure, scalable cloud-native digital platforms built with modern open-source architectures, meeting the Technology Code of Practice (TCoP) and UK data residency standards.",
-      icon: <WebDevIcon />,
-      gradient: "linear-gradient(135deg, rgba(29, 112, 184, 0.12) 0%, rgba(30, 64, 175, 0.1) 100%)",
-      delay: 0.2
-    },
-    {
-      title: "Citizen Portals & Accessible Apps",
-      description: "Inclusive citizen-facing digital services and mobile apps engineered to WCAG 2.2 AA standards, providing equitable access and assisted digital support for all UK citizens.",
-      icon: <AppDevIcon />,
-      gradient: "linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(14, 116, 144, 0.1) 100%)",
-      delay: 0.4
-    },
-    {
-      title: "User Research & Service Design",
-      description: "Rigorous user research, prototyping, and service assessments across Discovery and Alpha phases aligned directly with the 14 GDS Service Standards.",
-      icon: <DesignIcon />,
-      gradient: "linear-gradient(135deg, rgba(14, 116, 144, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)",
-      delay: 0.6
-    },
-    {
-      title: "Public Sector Data & Ethical AI",
-      description: "Interoperable data pipelines, secure open APIs, and compliant automation designed to adhere to the UK Government Algorithmic Transparency Standard and UK GDPR.",
-      icon: <AiIcon />,
-      gradient: "linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(29, 112, 184, 0.12) 100%)",
-      delay: 0.8
-    }
-  ];
-
   return (
-    <section className="relative py-24 md:py-32 lg:py-40 overflow-hidden min-h-screen" style={{ backgroundColor: 'var(--background)' }}>
-      <FloatingElements />
-
-      <div className="absolute inset-0"
-        style={{
-          background: 'radial-gradient(circle at center, transparent 0%, var(--background) 100%)'
-        }} />
-
+    <section
+      id="services"
+      aria-labelledby="services-heading"
+      className="relative overflow-x-clip pb-24 pt-10 md:pb-32 md:pt-14"
+    >
       <motion.div
-        className="relative z-10 container mx-auto px-4 max-w-7xl"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="text-center mb-20"
-          variants={headerVariants}
-        >
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 top-40 h-[440px] w-[440px] rounded-full blur-[150px]"
+        style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
+        animate={{ x: [0, -50, 20, 0], y: [0, 40, -30, 0] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-          <motion.h2
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            style={{ color: 'var(--foreground)' }}
-          >
-            Public Sector Digital Capabilities
-          </motion.h2>
-
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mx-auto max-w-3xl text-center">
           <motion.p
-            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            style={{ color: 'var(--text-muted)' }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="mb-4 font-mono text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--accent)" }}
           >
-            Delivering secure, user-centred software engineering and service design for UK central government, local authorities, and the NHS.
+            Our services
           </motion.p>
-        </motion.div>
+          <motion.h2
+            id="services-heading"
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
+            style={{ color: "var(--foreground)" }}
+          >
+            Everything you need to <span style={{ color: "var(--accent)" }}>build, launch and scale.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg"
+            style={{ color: "var(--text-muted)" }}
+          >
+            One team across strategy, design, engineering and operations, so nothing gets lost between handoffs.
+          </motion.p>
+        </div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 lg:gap-10"
-          variants={containerVariants}
-        >
-          {services.map((service, index) => (
-            <ServiceCard
-              key={index}
-              title={service.title}
-              description={service.description}
-              icon={service.icon}
-              gradient={service.gradient}
-              delay={service.delay}
-              index={index}
-            />
+        {/* Cards */}
+        <ul className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+          {SERVICES.map((s, i) => (
+            <ServiceCard key={s.id} service={s} index={i} />
           ))}
-        </motion.div>
+        </ul>
 
-      </motion.div>
+        {/* View all */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mt-14 flex justify-center"
+        >
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-2 rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            style={{ backgroundColor: "var(--accent)" }}
+          >
+            <span>View all services</span>
+            <ArrowUpRight
+              size={18}
+              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }

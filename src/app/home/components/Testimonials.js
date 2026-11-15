@@ -37,7 +37,7 @@ export default function Testimonials() {
   const testimonials = [
     {
       quote:
-        "Working with Devshift transformed our digital presence completely. Their attention to detail and innovative approach exceeded all expectations.",
+        "Working with Technoad transformed our digital presence completely. Their attention to detail and innovative approach exceeded all expectations.",
       name: "Sarah Chen",
       designation: "CEO, TechFlow Solutions",
       src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3",

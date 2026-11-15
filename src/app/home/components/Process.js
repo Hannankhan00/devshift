@@ -1,394 +1,342 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Lightbulb, Layers, Monitor, FlaskConical, Rocket, Headphones } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  useInView,
+} from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
-const steps = [
+/* ----------------------------- Content ----------------------------- */
+
+const STEPS = [
   {
-    id: "discovery",
-    icon: Lightbulb,
-    title: "1. Discovery",
-    description: "Understand citizen needs, policy constraints, and technology landscapes through user research.",
-    position: { x: 200, y: 100 },
-    row: "top"
+    title: "Discover & Strategize",
+    description:
+      "We start with a focused workshop to understand your goals, users and market. The result is a clear scope, roadmap and technical plan before any code is written.",
   },
   {
-    id: "alpha",
-    icon: Layers,
-    title: "2. Alpha",
-    description: "Test architectural spikes, build rapid prototypes, and de-risk core technical assumptions.",
-    position: { x: 600, y: 100 },
-    featured: true,
-    row: "top"
+    title: "Design & Plan",
+    description:
+      "UX research, wireframes and clickable prototypes turn ideas into something you can test with real users, backed by an architecture and estimate you can trust.",
   },
   {
-    id: "beta-private",
-    icon: Monitor,
-    title: "3. Private Beta",
-    description: "Build the secure, accessible software and test with an invited cohort of real public users.",
-    position: { x: 1000, y: 100 },
-    row: "top"
+    title: "Build & Iterate",
+    description:
+      "Agile sprints with regular demos, automated testing and code reviews. You see working software throughout and can steer the product as we go.",
   },
   {
-    id: "beta-public",
-    icon: FlaskConical,
-    title: "4. Public Beta",
-    description: "Open the service to all citizens, pass GDS Service Assessments, and integrate GOV.UK APIs.",
-    position: { x: 200, y: 560 },
-    row: "bottom"
-  },
-  {
-    id: "live",
-    icon: Rocket,
-    title: "5. Live Delivery",
-    description: "Deploy to production with 99.95% availability, automated CI/CD, and NCSC-aligned security.",
-    position: { x: 600, y: 560 },
-    row: "bottom"
-  },
-  {
-    id: "support",
-    icon: Headphones,
-    title: "6. Continuous Value",
-    description: "Provide ongoing SRE support, iterative feature enhancements, and accessible citizen support.",
-    position: { x: 1000, y: 560 },
-    row: "bottom"
+    title: "Launch & Scale",
+    description:
+      "Rigorous QA and security checks, a smooth monitored release, then ongoing support and improvements as your users and business grow.",
   },
 ];
 
-export default function Process() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [screenSize, setScreenSize] = useState('desktop');
-  const sectionRef = useRef(null);
+const EASE = [0.22, 1, 0.36, 1];
+
+/* Path geometry. X runs 0-1200 and is stretched to the full viewport width;
+   Y is in real pixels (stage height), so text offsets stay predictable. */
+const VB_W = 1200;
+const STAGE_H = 620;
+const NODES = [
+  { x: 144, y: 70 },
+  { x: 420, y: 175 },
+  { x: 696, y: 280 },
+  { x: 972, y: 385 },
+];
+
+function buildPath() {
+  const S = NODES[1].x - NODES[0].x;
+  let d = `M 0 ${NODES[0].y} L ${NODES[0].x} ${NODES[0].y}`;
+  for (let i = 0; i < NODES.length - 1; i++) {
+    const a = NODES[i];
+    const b = NODES[i + 1];
+    // flat for most of the run, then a late, smooth drop into the next node
+    d += ` C ${a.x + S * 0.6} ${a.y}, ${b.x - S * 0.3} ${b.y}, ${b.x} ${b.y}`;
+  }
+  d += ` L ${VB_W} ${NODES[NODES.length - 1].y}`;
+  return d;
+}
+
+const PATH_D = buildPath();
+
+/* ------------------------- Desktop: scroll-drawn path ------------------------- */
+
+function DesktopFlow() {
+  const areaRef = useRef(null);
   const pathRef = useRef(null);
-  
+  const [fractions, setFractions] = useState(() => NODES.map((n) => n.x / VB_W));
+  const [revealed, setRevealed] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: areaRef,
+    offset: ["start start", "end end"],
+  });
+  // line draws over the first ~85% of the pinned scroll
+  const drawn = useTransform(scrollYProgress, [0.02, 0.88], [0, 1]);
+
+  // measure how far along the path each node sits
   useEffect(() => {
-    const handleResize = () => {
-      setScreenSize(window.innerWidth < 768 ? 'mobile' : 'desktop');
-    };
-
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-
-      const section = sectionRef.current;
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      const sectionTop = rect.top;
-      const sectionHeight = rect.height;
-      
-      const startPoint = windowHeight;
-      const endPoint = -sectionHeight;
-      const scrollableDistance = startPoint - endPoint;
-      
-      let progress = (startPoint - sectionTop) / scrollableDistance;
-      progress = Math.max(0, Math.min(1, progress));
-      
-      setScrollProgress(progress);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const path = pathRef.current;
+    if (!path) return;
+    const total = path.getTotalLength();
+    const next = NODES.map((n) => {
+      let lo = 0;
+      let hi = total;
+      for (let i = 0; i < 24; i++) {
+        const mid = (lo + hi) / 2;
+        if (path.getPointAtLength(mid).x < n.x) lo = mid;
+        else hi = mid;
+      }
+      return lo / total;
+    });
+    setFractions(next);
   }, []);
 
-  const activeStepIndex = Math.min(
-    Math.floor(scrollProgress * steps.length),
-    steps.length - 1
-  );
-
-  // Perfect S-shape with smooth rounded edges
-  const topY = steps[0].position.y;
-  const bottomY = steps[3].position.y;
-  const midY = (topY + bottomY) / 2;
-  
-  // Extended curve points for smooth rounded edges
-  const rightExtend = steps[2].position.x + 200;
-  const curveRadius = 120;
-  
-  const pathD = `
-    M ${steps[0].position.x} ${steps[0].position.y}
-    L ${steps[1].position.x} ${steps[1].position.y}
-    L ${steps[2].position.x} ${steps[2].position.y}
-    L ${rightExtend - curveRadius} ${topY}
-    Q ${rightExtend} ${topY} ${rightExtend} ${topY + curveRadius}
-    L ${rightExtend} ${midY - curveRadius}
-    Q ${rightExtend} ${midY} ${rightExtend - curveRadius} ${midY}
-    L ${steps[3].position.x - rightExtend + steps[2].position.x + curveRadius} ${midY}
-    Q ${steps[3].position.x - rightExtend + steps[2].position.x} ${midY} ${steps[3].position.x - rightExtend + steps[2].position.x} ${midY + curveRadius}
-    L ${steps[3].position.x - rightExtend + steps[2].position.x} ${bottomY - curveRadius}
-    Q ${steps[3].position.x - rightExtend + steps[2].position.x} ${bottomY} ${steps[3].position.x - rightExtend + steps[2].position.x + curveRadius} ${bottomY}
-    L ${steps[3].position.x} ${steps[3].position.y}
-    L ${steps[4].position.x} ${steps[4].position.y}
-    L ${steps[5].position.x} ${steps[5].position.y}
-  `;
-
-  const pathLength = 5000;
-
-  // Mobile card layout
-  const renderMobileView = () => {
-    const cardSpacing = 120; // Space between cards
-    const lineLength = cardSpacing - 40; // Length of connecting lines
-    
-    return (
-      <div className="space-y-8 px-4">
-        {steps.map((step, index) => {
-          const isActive = index <= activeStepIndex;
-          const Icon = step.icon;
-          
-          return (
-            <div key={step.id} className="relative">
-              {/* Connecting line */}
-              {index < steps.length - 1 && (
-                <div 
-                  className="absolute left-8 top-16 w-0.5 h-20 transition-all duration-500"
-                  style={{ backgroundColor: 'var(--card-border)' }}
-                >
-                  <div 
-                    className="w-full transition-all duration-500 ease-out"
-                    style={{
-                      backgroundColor: 'var(--accent)',
-                      height: isActive ? '100%' : '0%',
-                      transitionDelay: `${index * 100}ms`
-                    }}
-                  />
-                </div>
-              )}
-              
-              {/* Process card */}
-              <div 
-                className="relative rounded-xl p-6 shadow-lg border transition-all duration-500"
-                style={{
-                  backgroundColor: 'var(--card-bg)',
-                  borderColor: isActive ? 'var(--accent)' : 'var(--card-border)',
-                  boxShadow: isActive ? '0 10px 25px rgba(76, 0, 255, 0.15)' : '0 4px 6px rgba(0, 0, 0, 0.05)',
-                  transform: isActive ? 'translateX(0)' : 'translateX(-10px)',
-                  opacity: isActive ? 1 : 0.7
-                }}
-              >
-                {/* Icon */}
-                <div className="flex items-center mb-4">
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500"
-                    style={{
-                      backgroundColor: isActive ? 'var(--accent)' : 'var(--card-border)',
-                      color: isActive ? '#ffffff' : 'var(--text-muted)'
-                    }}
-                  >
-                    <Icon size={24} />
-                  </div>
-                  <div className="ml-4">
-                    <h3 
-                      className="text-lg font-bold transition-colors"
-                      style={{
-                        color: isActive ? "var(--foreground)" : "var(--text-muted)"
-                      }}
-                    >
-                      {step.title}
-                    </h3>
-                    {step.featured && (
-                      <span 
-                        className="text-xs px-2 py-1 rounded-full"
-                        style={{
-                          backgroundColor: isActive ? 'rgba(76, 0, 255, 0.1)' : 'var(--card-border)',
-                          color: isActive ? 'var(--accent)' : 'var(--text-muted)'
-                        }}
-                      >
-                        Featured
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Description */}
-                <p 
-                  className="text-sm leading-relaxed"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {step.description}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
-  // Desktop S-curve layout (unchanged)
-  const renderDesktopView = () => (
-    <div className="relative max-w-6xl mx-auto">
-      <div className="relative w-full" style={{ height: "700px" }}>
-        <svg 
-          className="absolute inset-0 w-full h-full" 
-          viewBox="0 0 1200 800"
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <defs>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          
-          {/* Background path */}
-          <path
-            d={pathD}
-            fill="none"
-            stroke="var(--card-border)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.3"
-          />
-
-          {/* Animated progress path */}
-          <path
-            ref={pathRef}
-            d={pathD}
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeDasharray={pathLength}
-            strokeDashoffset={pathLength - scrollProgress * pathLength}
-            style={{
-              transition: "stroke-dashoffset 0.1s linear",
-              filter: "drop-shadow(0 0 8px rgba(76, 0, 255, 0.5))"
-            }}
-          />
-
-          {/* Step icons */}
-          {steps.map((step, index) => {
-            const isActive = index <= activeStepIndex;
-            const Icon = step.icon;
-            const radius = step.featured ? 42 : 32;
-            const iconSize = step.featured ? 32 : 24;
-            
-            return (
-              <g key={step.id}>
-                {/* Outer circle (border effect) */}
-                <circle
-                  cx={step.position.x}
-                  cy={step.position.y}
-                  r={radius + 3}
-                  className="transition-all duration-500"
-                  fill="none"
-                  stroke={isActive ? "var(--accent)" : "var(--card-border)"}
-                  strokeWidth={step.featured ? "3" : "2"}
-                  opacity={step.featured ? "0.4" : "0.6"}
-                />
-                
-                {/* Inner circle */}
-                <circle
-                  cx={step.position.x}
-                  cy={step.position.y}
-                  r={radius}
-                  className="transition-all duration-500"
-                  fill={isActive ? "var(--accent)" : "var(--background)"}
-                  stroke={isActive ? "var(--accent)" : "var(--card-border)"}
-                  strokeWidth="2"
-                  filter={isActive && step.featured ? "url(#glow)" : undefined}
-                  style={{
-                    boxShadow: isActive ? "0 0 20px rgba(76, 0, 255, 0.3)" : "none"
-                  }}
-                />
-                
-                {/* Icon */}
-                <foreignObject
-                  x={step.position.x - iconSize / 2}
-                  y={step.position.y - iconSize / 2}
-                  width={iconSize}
-                  height={iconSize}
-                  className="pointer-events-none"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Icon
-                      className="transition-colors duration-500"
-                      style={{
-                        width: iconSize,
-                        height: iconSize,
-                        color: isActive ? "#ffffff" : "var(--text-muted)"
-                      }}
-                    />
-                  </div>
-                </foreignObject>
-              </g>
-            );
-          })}
-        </svg>
-
-        {/* Step labels */}
-        {steps.map((step, index) => {
-          const isActive = index <= activeStepIndex;
-          
-          return (
-            <div
-              key={`label-${step.id}`}
-              className="absolute"
-              style={{
-                left: `${(step.position.x / 1200) * 100}%`,
-                top: `${(step.position.y / 800) * 100}%`,
-                transform: "translate(-50%, 0)",
-                width: "240px",
-                paddingTop: "70px",
-              }}
-            >
-              <h3
-                className="text-lg font-bold transition-colors text-center mb-3"
-                style={{
-                  color: isActive ? "var(--foreground)" : "var(--text-muted)"
-                }}
-              >
-                {step.title}
-              </h3>
-              <p 
-                className="text-sm text-center leading-relaxed"
-                style={{ color: "var(--text-muted)", lineHeight: "1.6" }}
-              >
-                {step.description}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
+  useMotionValueEvent(drawn, "change", (v) => {
+    const count = fractions.filter((f) => v >= f - 0.005).length;
+    setRevealed((prev) => (prev === count ? prev : count));
+  });
 
   return (
-    <div
-      ref={sectionRef}
-      className="relative min-h-[200vh] py-20"
-      style={{ backgroundColor: 'var(--background)' }}
-    >
-      <div className="sticky top-20 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight"
-            style={{ color: 'var(--foreground)' }}
-          >
-            GDS Agile Delivery Lifecycle
-          </h2>
-          <p 
-            className="text-lg md:text-xl max-w-4xl mx-auto leading-relaxed"
-            style={{ color: 'var(--text-muted)' }}
-          >
-            Guiding public sector digital programmes through every assessment gate from Discovery through to Live.
-          </p>
-        </div>
+    <div ref={areaRef} className="relative hidden h-[340vh] md:block">
+      <div className="sticky top-16 flex h-[calc(100vh-4rem)] items-center">
+        <div className="relative w-full" style={{ height: STAGE_H }}>
+          <div className="relative h-full w-full">
+            <svg
+              viewBox={`0 0 ${VB_W} ${STAGE_H}`}
+              preserveAspectRatio="none"
+              className="absolute inset-0 h-full w-full overflow-visible"
+              fill="none"
+              aria-hidden="true"
+            >
+              {/* faint track */}
+              <path
+                ref={pathRef}
+                d={PATH_D}
+                stroke="var(--card-border)"
+                strokeWidth="5"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                opacity="0.55"
+              />
+              {/* drawn line */}
+              <motion.path
+                d={PATH_D}
+                stroke="var(--accent)"
+                strokeWidth="5"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                style={{
+                  pathLength: drawn,
+                  filter: "drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 65%, transparent))",
+                }}
+              />
+            </svg>
 
-        {/* Conditional rendering based on screen size */}
-        {screenSize === 'mobile' ? renderMobileView() : renderDesktopView()}
+            {NODES.map((n, i) => {
+              const on = revealed > i;
+              return (
+                <React.Fragment key={i}>
+                  {/* node */}
+                  <motion.div
+                    className="absolute flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border-2 text-base font-bold"
+                    style={{
+                      left: `${(n.x / VB_W) * 100}%`,
+                      top: n.y,
+                      backgroundColor: on ? "var(--accent)" : "var(--background)",
+                      borderColor: on ? "var(--accent)" : "var(--card-border)",
+                      color: on ? "#ffffff" : "var(--text-muted)",
+                      boxShadow: on
+                        ? "0 0 0 6px color-mix(in srgb, var(--accent) 20%, transparent), 0 8px 24px color-mix(in srgb, var(--accent) 45%, transparent)"
+                        : "none",
+                    }}
+                    animate={{ scale: on ? 1 : 0.8 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    {i + 1}
+                  </motion.div>
+
+                  {/* text */}
+                  <motion.div
+                    className="absolute"
+                    style={{
+                      left: `calc(${(n.x / VB_W) * 100}% - 22px)`,
+                      top: n.y + 82,
+                      width: "clamp(190px, 16vw, 250px)",
+                    }}
+                    initial={false}
+                    animate={on ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 18, filter: "blur(6px)" }}
+                    transition={{ duration: 0.7, ease: EASE }}
+                  >
+                    <h3 className="text-lg font-bold tracking-tight lg:text-xl" style={{ color: "var(--foreground)" }}>
+                      {STEPS[i].title}
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-relaxed lg:text-sm" style={{ color: "var(--text-muted)" }}>
+                      {STEPS[i].description}
+                    </p>
+                  </motion.div>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
+  );
+}
+
+/* ------------------------- Mobile: vertical timeline ------------------------- */
+
+function MobileStep({ step, index }) {
+  const ref = useRef(null);
+  const reached = useInView(ref, { once: true, margin: "0px 0px -45% 0px" });
+
+  return (
+    <li ref={ref} className="relative pb-10 pl-14 last:pb-0">
+      <span
+        aria-hidden="true"
+        className="absolute left-5 top-0 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-xl border-2 text-sm font-bold transition-all duration-700"
+        style={{
+          backgroundColor: reached ? "var(--accent)" : "var(--background)",
+          borderColor: reached ? "var(--accent)" : "var(--card-border)",
+          color: reached ? "#ffffff" : "var(--text-muted)",
+          boxShadow: reached ? "0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent)" : "none",
+        }}
+      >
+        {index + 1}
+      </span>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.7, ease: EASE }}
+      >
+        <h3 className="pt-1.5 text-lg font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
+          {step.title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          {step.description}
+        </p>
+      </motion.div>
+    </li>
+  );
+}
+
+function MobileFlow() {
+  const listRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: listRef, offset: ["start 75%", "end 55%"] });
+
+  return (
+    <ol ref={listRef} className="relative mt-12 md:hidden">
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-5 top-0 w-px -translate-x-1/2"
+        style={{ backgroundColor: "var(--card-border)" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="absolute bottom-0 left-5 top-0 w-[2px] origin-top -translate-x-1/2"
+        style={{
+          scaleY: scrollYProgress,
+          backgroundColor: "var(--accent)",
+          boxShadow: "0 0 10px color-mix(in srgb, var(--accent) 55%, transparent)",
+        }}
+      />
+      {STEPS.map((s, i) => (
+        <MobileStep key={s.title} step={s} index={i} />
+      ))}
+    </ol>
+  );
+}
+
+/* ------------------------------ Main ------------------------------- */
+
+export default function Process() {
+  return (
+    <section
+      id="process"
+      aria-labelledby="process-heading"
+      className="relative overflow-x-clip pt-10 md:pt-14"
+    >
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 top-48 h-[420px] w-[420px] rounded-full blur-[150px]"
+        style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
+        animate={{ x: [0, -50, 20, 0], y: [0, 40, -30, 0] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mx-auto max-w-3xl text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="mb-4 font-mono text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--accent)" }}
+          >
+            Our process
+          </motion.p>
+          <motion.h2
+            id="process-heading"
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
+            style={{ color: "var(--foreground)" }}
+          >
+            From idea to launch, <span style={{ color: "var(--accent)" }}>in four clear steps.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg"
+            style={{ color: "var(--text-muted)" }}
+          >
+            A transparent, collaborative way of working, so you always know where your project stands and what happens next.
+          </motion.p>
+        </div>
+
+      </div>
+
+      {/* full-bleed so the line runs from screen edge to screen edge */}
+      <DesktopFlow />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <MobileFlow />
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="flex justify-center pb-24 pt-10 md:pb-32 md:pt-4"
+        >
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-2 rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+            style={{ backgroundColor: "var(--accent)" }}
+          >
+            <span>Start your project</span>
+            <ArrowUpRight
+              size={18}
+              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </Link>
+        </motion.div>
+      </div>
+    </section>
   );
 }

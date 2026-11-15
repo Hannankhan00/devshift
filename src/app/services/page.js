@@ -4,7 +4,7 @@ import Process from "../home/components/Process";
 import FinalCTA from "../home/components/FinalCTA";
 
 export const metadata = {
-  title: "Engineering Services - Devshift",
+  title: "Engineering Services - Technoad",
   description: "Full-stack software engineering, custom cloud applications, mobile platforms, and AI automation.",
 };
 

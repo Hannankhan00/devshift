@@ -1,256 +1,234 @@
 "use client";
-import { Rocket, Users, GitMerge, LifeBuoy } from "lucide-react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Building2, Handshake, TrendingUp, Check } from "lucide-react";
 
-const features = [
+/* ----------------------------- Content ----------------------------- */
+
+const REASONS = [
   {
-    title: "GDS Service Standard & TCoP Aligned",
-    description: "End-to-end agile delivery across Discovery, Alpha, Beta, and Live phases conforming to Central Digital & Data Office (CDDO) and Technology Code of Practice standards.",
-    icon: <Rocket />,
-    area: "md:col-span-7",
+    icon: Building2,
+    title: "Industry Expertise",
+    text: "We learn your domain before we write a line of code. From healthcare and e-commerce to SaaS and finance, our teams bring practical, industry-specific experience so the solution fits how your sector really works.",
+    points: ["Domain-first discovery", "Industry-aware solutions", "Compliance-minded delivery"],
   },
   {
-    title: "Security Cleared & Vetted Teams",
-    description: "BPSS and SC-cleared software engineers, cloud architects, and delivery managers experienced in sensitive public sector workloads.",
-    icon: <Users />,
-    area: "md:col-span-5",
+    icon: Handshake,
+    title: "Client-Centric Approach",
+    text: "We look at what your business needs before suggesting a solution. Your project gets focused attention throughout the entire lifecycle, with transparent, prompt communication at every step.",
+    points: ["Single point of contact", "Regular demos & updates", "Your goals before our tech"],
   },
   {
-    title: "Accessibility by Design (WCAG 2.2 AA)",
-    description: "Rigorous automated and user testing with assistive technologies to ensure full compliance with the Public Sector Bodies Accessibility Regulations (PSBAR 2018).",
-    icon: <GitMerge />,
-    area: "md:col-span-5",
-  },
-  {
-    title: "Social Value & Net Zero Commitment",
-    description: "Measurable commitments meeting PPN 06/20 (STEM apprenticeships, regional economic equality) and PPN 06/21 Carbon Reduction Plan targets.",
-    icon: <LifeBuoy />,
-    area: "md:col-span-7",
+    icon: TrendingUp,
+    title: "Results-Driven Delivery",
+    text: "Our solutions are tied to business outcomes: faster operations, easier scaling, better conversions and improved customer experiences. We define success up front and build towards it.",
+    points: ["Clear success metrics", "Built to scale", "Continuous improvement"],
   },
 ];
 
-export default function WhyChooseUs() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-        duration: 0.6,
-      },
-    },
-  };
+const EASE = [0.22, 1, 0.36, 1];
 
-  const titleVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 60,
-      scale: 0.8
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        bounce: 0.4,
-        duration: 0.8,
-      },
-    },
-  };
+/* ------------------------------ Panel ------------------------------ */
 
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 80,
-      scale: 0.9,
-      rotateX: 15
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        type: "spring",
-        bounce: 0.3,
-        duration: 0.7,
-      },
-    },
-  };
+function Panel({ reason, index, active, onActivate }) {
+  const Icon = reason.icon;
 
   return (
-    <motion.section
-      className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
-      style={{ backgroundColor: 'var(--background)' }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={containerVariants}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.8, delay: index * 0.12, ease: EASE }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={active}
+      onMouseEnter={onActivate}
+      onFocus={onActivate}
+      onClick={onActivate}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onActivate();
+        }
+      }}
+      className="relative cursor-pointer overflow-hidden rounded-3xl border transition-[flex-grow,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] lg:h-[420px] lg:basis-0"
+      style={{
+        borderColor: active ? "var(--accent)" : "var(--card-border)",
+        backgroundColor: "var(--card-bg)",
+        flexGrow: active ? 2.6 : 1,
+        boxShadow: active ? "0 25px 60px -20px color-mix(in srgb, var(--accent) 55%, transparent)" : "none",
+      }}
     >
-      {/* Animated background elements */}
-      <motion.div
-        className="absolute inset-0 opacity-10 pointer-events-none"
-        initial={{ scale: 0, rotate: 0 }}
-        animate={{ 
-          scale: [0, 1.2, 1],
-          rotate: [0, 180, 360],
+      {/* accent fill fades in when expanded */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 transition-opacity duration-700"
+        style={{
+          opacity: active ? 1 : 0,
+          background: "linear-gradient(155deg, var(--accent) 0%, #3b1bd6 55%, #1e1b6b 100%)",
         }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
+      />
+      {/* soft light + grid texture */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 transition-opacity duration-700"
+        style={{
+          opacity: active ? 0.35 : 0,
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundSize: "22px 22px",
+          maskImage: "linear-gradient(135deg, #000 0%, transparent 65%)",
+          WebkitMaskImage: "linear-gradient(135deg, #000 0%, transparent 65%)",
         }}
-      >
-        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-xl"></div>
-        <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full blur-xl"></div>
-      </motion.div>
+      />
+      <div
+        aria-hidden="true"
+        className="absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl transition-opacity duration-700"
+        style={{ backgroundColor: "#ffffff", opacity: active ? 0.18 : 0 }}
+      />
 
-      <div className="relative z-10 container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-20">
-          <motion.div
-            variants={titleVariants}
-            className="relative"
+      <div className="relative flex h-full flex-col justify-between gap-6 p-7 sm:p-8">
+        {/* top: icon + number */}
+        <div className="flex items-start justify-between">
+          <span
+            className="flex h-14 w-14 items-center justify-center rounded-2xl transition-colors duration-500"
+            style={{
+              backgroundColor: active ? "rgba(255,255,255,0.16)" : "color-mix(in srgb, var(--accent) 12%, transparent)",
+              color: active ? "#ffffff" : "var(--accent)",
+              backdropFilter: active ? "blur(6px)" : "none",
+            }}
           >
-            <motion.h2
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-tight relative z-10"
-              style={{ color: 'var(--foreground)' }}
-              whileHover={{
-                scale: 1.05,
-                transition: { duration: 0.3 }
-              }}
-            >
-              Why Public Sector Buyers Choose Devshift
-            </motion.h2>
-          </motion.div>
+            <Icon size={26} aria-hidden="true" />
+          </span>
+          <span
+            className="font-mono text-sm font-semibold transition-colors duration-500"
+            style={{ color: active ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}
+          >
+            0{index + 1}
+          </span>
         </div>
-        
-        <motion.ul
-          className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-8"
-          variants={containerVariants}
-        >
-          {features.map((feature, index) => (
-            <GridItem
-              key={index}
-              index={index}
-              area={feature.area}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              variants={itemVariants}
-            />
-          ))}
-        </motion.ul>
+
+        {/* bottom: copy */}
+        <div>
+          <h3
+            className="text-2xl font-bold leading-tight tracking-tight transition-colors duration-500 sm:text-3xl"
+            style={{ color: active ? "#ffffff" : "var(--foreground)" }}
+          >
+            {reason.title}
+          </h3>
+
+          <div
+            className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              active ? "lg:max-h-[240px] lg:opacity-100" : "lg:max-h-0 lg:opacity-0"
+            }`}
+          >
+            <div className="lg:w-[min(420px,100%)]">
+              <p
+                className="mt-4 text-sm leading-relaxed transition-colors duration-500 sm:text-base"
+                style={{ color: active ? "rgba(255,255,255,0.85)" : "var(--text-muted)" }}
+              >
+                {reason.text}
+              </p>
+              <ul className="mt-5 space-y-2">
+                {reason.points.map((p) => (
+                  <li
+                    key={p}
+                    className="flex items-center gap-2.5 text-sm font-medium transition-colors duration-500"
+                    style={{ color: active ? "#ffffff" : "var(--foreground)" }}
+                  >
+                    <span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                      style={{
+                        backgroundColor: active ? "rgba(255,255,255,0.2)" : "color-mix(in srgb, var(--accent) 12%, transparent)",
+                        color: active ? "#ffffff" : "var(--accent)",
+                      }}
+                    >
+                      <Check size={12} aria-hidden="true" />
+                    </span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* hint on collapsed panels (desktop) */}
+          <p
+            className={`hidden font-mono text-xs uppercase tracking-widest transition-opacity duration-500 lg:block ${
+              active ? "h-0 opacity-0" : "mt-3 opacity-100"
+            }`}
+            style={{ color: "var(--text-muted)" }}
+          >
+            Hover to explore
+          </p>
+        </div>
       </div>
-    </motion.section>
+    </motion.div>
   );
 }
 
-const GridItem = ({ area, icon, title, description, variants, index }) => {
-  const [hover, setHover] = useState(false);
+/* ------------------------------ Main ------------------------------- */
+
+export default function WhyChooseUs() {
+  const [active, setActive] = useState(0);
+
   return (
-    <motion.li 
-      className={`group min-h-[14rem] list-none ${area}`} 
-      variants={variants}
-      whileHover={{ 
-        scale: 1.02,
-        y: -8,
-        transition: { 
-          type: "spring",
-          stiffness: 300,
-          damping: 20
-        }
-      }}
-      whileTap={{ scale: 0.98 }}
-      onHoverStart={() => setHover(true)}
-      onHoverEnd={() => setHover(false)}
+    <section
+      id="why-us"
+      aria-labelledby="why-heading"
+      className="relative overflow-x-clip pb-24 pt-10 md:pb-32 md:pt-14"
     >
-      <motion.div 
-        className="relative h-full rounded-2xl border p-2 md:rounded-3xl md:p-3 cursor-pointer" 
-        style={{
-          borderColor: hover ? "rgba(139, 92, 246, 0.2)" : 'var(--card-border)',
-          boxShadow: hover ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)" : "none",
-        }}
-        transition={{ duration: 0.2 }}
-      >
-        <GlowingEffect
-          spread={40}
-          glow={true}
-          disabled={false}
-          proximity={64}
-          inactiveZone={0.01} 
-        />
-        
-        <motion.div 
-          className="border-0.75 relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl p-6 md:p-6" 
-          style={{
-            backgroundColor: hover ? "rgba(139, 92, 246, 0.05)" : 'var(--card-bg)'
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="relative flex flex-1 flex-col justify-between gap-3">
-            {/* Animated icon container */}
-            <motion.div 
-              className="w-fit rounded-lg border p-2" 
-              style={{
-                borderColor: hover ? "rgba(139, 92, 246, 0.3)" : 'var(--card-border)',
-                color: hover ? "rgba(139, 92, 246, 0.7)" : 'var(--accent)',
-                backgroundColor: hover ? "rgba(139, 92, 246, 0.08)" : 'transparent',
-              }}
-              animate={{ scale: hover ? 1.05 : 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              <motion.div
-                initial={{ rotateY: 0 }}
-                whileHover={{ rotateY: 360 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                {icon}
-              </motion.div>
-            </motion.div>
-            
-            <div className="space-y-3">
-              <motion.h3 
-                className="-tracking-4 pt-0.5 font-sans text-xl/[1.375rem] font-semibold text-balance md:text-2xl/[1.875rem]" 
-                style={{color: hover ? "rgba(139, 92, 246, 0.75)" : 'var(--foreground)'}}
-                animate={{ x: hover ? 5 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {title}
-              </motion.h3>
-              
-              <motion.p 
-                className="font-sans text-sm/[1.125rem] md:text-base/[1.375rem] [&_b]:md:font-semibold [&_strong]:md:font-semibold" 
-                style={{color: hover ? "rgba(139, 92, 246, 0.65)" : 'var(--text-muted)'}}
-                animate={{ x: hover ? 5 : 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {description}
-              </motion.p>
-            </div>
-          </div>
-          
-          {/* Hover overlay effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 rounded-xl pointer-events-none"
-            animate={{ opacity: hover ? 1 : 0 }}
-            transition={{ duration: 0.2 }}
-          />
-          
-          {/* Animated corner accent */}
-          <motion.div
-            className="absolute top-2 right-2 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full pointer-events-none"
-            animate={{ 
-              opacity: hover ? 0.18 : 0,
-              scale: hover ? 1.15 : 1,
-            }}
-            transition={{ duration: 0.25 }}
-          />
-        </motion.div>
-      </motion.div>
-    </motion.li>
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-32 top-24 h-[420px] w-[420px] rounded-full blur-[150px]"
+        style={{ backgroundColor: "var(--accent)", opacity: 0.1 }}
+        animate={{ x: [0, 50, -20, 0], y: [0, -30, 40, 0] }}
+        transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mx-auto max-w-3xl text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="mb-4 font-mono text-xs font-semibold uppercase tracking-widest"
+            style={{ color: "var(--accent)" }}
+          >
+            Why work with us
+          </motion.p>
+          <motion.h2
+            id="why-heading"
+            initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="text-4xl font-extrabold leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
+            style={{ color: "var(--foreground)" }}
+          >
+            A partner you can <span style={{ color: "var(--accent)" }}>rely on.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Plenty of teams can write code. We focus on what makes a project actually succeed.
+          </motion.p>
+        </div>
+
+        {/* Expanding panels */}
+        <div className="mt-14 flex flex-col gap-4 lg:flex-row lg:gap-5">
+          {REASONS.map((r, i) => (
+            <Panel key={r.title} reason={r} index={i} active={active === i} onActivate={() => setActive(i)} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
-};
+}

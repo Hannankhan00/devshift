@@ -124,7 +124,7 @@ export default function About() {
     {
       year: "2021",
       title: "The Beginning",
-      description: "Devshift was born from a passion for creating exceptional digital experiences. Started as a small team with big dreams."
+      description: "Technoad was born from a passion for creating exceptional digital experiences. Started as a small team with big dreams."
     },
     {
       year: "2022",

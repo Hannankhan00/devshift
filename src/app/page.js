@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 export const metadata = {
-    title: "Devshift",
+    title: "Technoad",
     description: "Professional web development, design, and automation services",
 };
 

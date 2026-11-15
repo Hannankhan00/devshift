@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Get a Quote - Devshift",
+  title: "Get a Quote - Technoad",
   description: "Request a custom quote for your web development, design, or automation project.",
 };
 

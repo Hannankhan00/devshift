@@ -17,12 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Devshift | Software Development House & Digital Product Studio",
-  description: "Devshift is an agile software development house. We build high-performance web platforms, custom cloud applications, and digital products with clean architecture.",
+  title: "Technoad | Software Development House & Digital Product Studio",
+  description: "Technoad is an agile software development house. We build high-performance web platforms, custom cloud applications, and digital products with clean architecture.",
   keywords: "software house, web development, cloud software engineering, digital products, custom software, enterprise applications",
-  authors: [{ name: "Devshift Team" }],
+  authors: [{ name: "Technoad Team" }],
   openGraph: {
-    title: "Devshift | Software Development House & Digital Product Studio",
+    title: "Technoad | Software Development House & Digital Product Studio",
     description: "High-performance web platforms, custom cloud software, and digital products built with clean architecture.",
     type: "website",
   },
@@ -32,6 +32,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
       >
         <ErrorBoundary>

@@ -115,7 +115,7 @@ export default function Portfolio() {
   return (
     <>
       <Head>
-        <title>Our Portfolio — Showcase of Exceptional Projects | Devshift</title>
+        <title>Our Portfolio — Showcase of Exceptional Projects | Technoad</title>
         <meta name="description" content="Explore our portfolio of successful web development projects. We build exceptional digital experiences with cutting-edge technology and beautiful design." />
         <meta name="keywords" content="portfolio, web development projects, React, Next.js, UI/UX design, automation" />
       </Head>
