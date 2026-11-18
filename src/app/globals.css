@@ -42,6 +42,39 @@ body {
   outline-offset: 2px;
 }
 
+/* Smooth in-page scrolling for anchor links (reduced-motion users are reset below) */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Technology marquee (About page): rows scroll in opposite directions */
+@keyframes tech-scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes tech-scroll-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.tech-row {
+  mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+}
+
+.tech-track {
+  display: flex;
+  width: max-content;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.tech-row:hover .tech-track {
+  animation-play-state: paused;
+}
+
 /* Accessibility: Respect user reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *,
