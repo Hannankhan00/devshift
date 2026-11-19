@@ -2,65 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Briefcase, Code2, PenTool, ClipboardList, Linkedin, Github } from "lucide-react";
-
-/* ----------------------------- Content ----------------------------- */
-/*
-  EDIT ME: replace the placeholder names with your real team.
-  - image:    path or URL of a portrait (optional; shows a themed illustration tile without one)
-  - linkedin / github: optional URLs; icons only appear when provided
-*/
-const TEAM = [
-  {
-    name: "Add Name Here",
-    role: "Founder & CEO",
-    bio: "Sets the vision, leads client partnerships and makes sure every project is tied to real business goals.",
-    icon: Briefcase,
-    tint: "var(--accent)",
-    image: "",
-    linkedin: "",
-    github: "",
-  },
-  {
-    name: "Add Name Here",
-    role: "Lead Engineer",
-    bio: "Owns architecture and code quality, turning complex requirements into software that is fast, secure and maintainable.",
-    icon: Code2,
-    tint: "#3b82f6",
-    image: "",
-    linkedin: "",
-    github: "",
-  },
-  {
-    name: "Add Name Here",
-    role: "Product Designer",
-    bio: "Shapes how products look and feel, from research and prototypes to polished, accessible interfaces.",
-    icon: PenTool,
-    tint: "#10b981",
-    image: "",
-    linkedin: "",
-    github: "",
-  },
-  {
-    name: "Add Name Here",
-    role: "Project Manager",
-    bio: "Keeps delivery on track and communication clear, so you always know what is happening and what comes next.",
-    icon: ClipboardList,
-    tint: "#f59e0b",
-    image: "",
-    linkedin: "",
-    github: "",
-  },
-];
+import { ArrowRight, ArrowUpRight, Linkedin, Github } from "lucide-react";
+import { TEAM } from "@/lib/team";
+import Portrait from "../../components/portrait";
 
 const EASE = [0.22, 1, 0.36, 1];
 
 /* ------------------------------ Card ------------------------------- */
 
 function Member({ person, index }) {
-  const Icon = person.icon;
   const hasSocial = person.linkedin || person.github;
 
   return (
@@ -72,61 +23,11 @@ function Member({ person, index }) {
       transition={{ duration: 0.8, delay: (index % 4) * 0.1, ease: EASE }}
     >
       <div className="group">
-        {/* Portrait */}
         <div
           className="relative aspect-[4/5] overflow-hidden rounded-3xl border"
           style={{ borderColor: "var(--card-border)", backgroundColor: "var(--card-bg)" }}
         >
-          {person.image ? (
-            <Image
-              src={person.image}
-              alt={`${person.name}, ${person.role}`}
-              fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            />
-          ) : (
-            <>
-              <div
-                aria-hidden="true"
-                className="absolute inset-0"
-                style={{
-                  background: `linear-gradient(160deg, color-mix(in srgb, ${person.tint} 28%, var(--card-bg)) 0%, var(--card-bg) 75%)`,
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 opacity-50"
-                style={{
-                  backgroundImage: "radial-gradient(var(--card-border) 1px, transparent 1px)",
-                  backgroundSize: "18px 18px",
-                }}
-              />
-              <div
-                aria-hidden="true"
-                className="absolute -bottom-10 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full blur-3xl"
-                style={{ backgroundColor: person.tint, opacity: 0.35 }}
-              />
-              {/* abstract "person" silhouette */}
-              <div className="absolute inset-0 flex items-end justify-center" aria-hidden="true">
-                <div
-                  className="relative h-[62%] w-[58%] rounded-t-[999px] transition-transform duration-700 ease-out group-hover:scale-105"
-                  style={{ backgroundColor: `color-mix(in srgb, ${person.tint} 22%, var(--background))` }}
-                >
-                  <div
-                    className="absolute -top-[38%] left-1/2 h-[52%] w-[52%] -translate-x-1/2 rounded-full"
-                    style={{ backgroundColor: `color-mix(in srgb, ${person.tint} 30%, var(--background))` }}
-                  />
-                </div>
-              </div>
-              <span
-                className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-lg"
-                style={{ backgroundColor: person.tint }}
-              >
-                <Icon size={20} aria-hidden="true" />
-              </span>
-            </>
-          )}
+          <Portrait person={person} />
 
           {/* hover bio (desktop) */}
           <div
@@ -166,7 +67,6 @@ function Member({ person, index }) {
           </div>
         </div>
 
-        {/* Name + role */}
         <div className="mt-5 px-1">
           <h3 className="text-lg font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
             {person.name}
@@ -174,7 +74,6 @@ function Member({ person, index }) {
           <p className="mt-0.5 font-mono text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
             {person.role}
           </p>
-          {/* bio shown inline on touch / small screens */}
           <p className="mt-3 text-sm leading-relaxed lg:hidden" style={{ color: "var(--text-muted)" }}>
             {person.bio}
           </p>
@@ -202,7 +101,6 @@ export default function People() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="mx-auto max-w-3xl text-center">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -238,14 +136,12 @@ export default function People() {
           </motion.p>
         </div>
 
-        {/* Team */}
         <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
           {TEAM.map((p, i) => (
             <Member key={`${p.role}-${i}`} person={p} index={i} />
           ))}
         </ul>
 
-        {/* Closing note */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -257,18 +153,28 @@ export default function People() {
             When you work with Technoad, you work directly with the people building your product, not an account
             manager in between.
           </p>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-2 rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-            style={{ backgroundColor: "var(--accent)" }}
-          >
-            <span>Say hello</span>
-            <ArrowUpRight
-              size={18}
-              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              aria-hidden="true"
-            />
-          </Link>
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              style={{ backgroundColor: "var(--accent)" }}
+            >
+              <span>Say hello</span>
+              <ArrowUpRight
+                size={18}
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </Link>
+            <Link
+              href="/team"
+              className="group inline-flex items-center gap-2 text-sm font-semibold"
+              style={{ color: "var(--accent)" }}
+            >
+              <span>Meet the full team</span>
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>

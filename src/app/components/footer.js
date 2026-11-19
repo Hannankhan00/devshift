@@ -28,7 +28,7 @@ const COLUMNS = [
       { name: "About us", href: "/about" },
       { name: "Portfolio", href: "/portfolio" },
       { name: "Our process", href: "/home#process" },
-      { name: "Our people", href: "/home#people" },
+      { name: "Meet the team", href: "/team" },
       { name: "Careers", href: "/careers" },
       { name: "FAQ", href: "/home#faq" },
     ],

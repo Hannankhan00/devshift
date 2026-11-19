@@ -24,7 +24,7 @@ const NAV = [
         items: [
             { label: "About Technoad", href: "/about" },
             { label: "Portfolio", href: "/portfolio" },
-            { label: "Meet the team", href: "/home#people" },
+            { label: "Meet the team", href: "/team" },
             { label: "Careers", href: "/careers" },
         ],
     },
