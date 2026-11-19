@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Logo from "./logo";
-import { Github, Linkedin, ArrowUp, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, ArrowUp, ArrowUpRight, Mail, Phone, MapPin } from "lucide-react";
+import { COMPANY, COMPANY_ADDRESS_ONE_LINE } from "@/lib/company";
 
 const SOCIALS = [
   { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com", label: "Technoad on LinkedIn" },
@@ -73,6 +74,26 @@ export default function Footer() {
                 aria-hidden="true"
               />
             </Link>
+
+            <address className="mt-6 space-y-3 text-sm not-italic" style={{ color: "var(--text-muted)" }}>
+              <a href={COMPANY.phoneHref} className="flex items-center gap-3 transition-colors hover:text-[var(--accent)]">
+                <Phone size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
+                {COMPANY.phone}
+              </a>
+              <a href={COMPANY.emailHref} className="flex items-center gap-3 transition-colors hover:text-[var(--accent)]">
+                <Mail size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
+                {COMPANY.email}
+              </a>
+              <a
+                href={COMPANY.mapHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 transition-colors hover:text-[var(--accent)]"
+              >
+                <MapPin size={16} className="mt-0.5 shrink-0" style={{ color: "var(--accent)" }} aria-hidden="true" />
+                <span>{COMPANY_ADDRESS_ONE_LINE}</span>
+              </a>
+            </address>
 
             <div className="mt-6 flex items-center gap-3">
               {SOCIALS.map((s) => {

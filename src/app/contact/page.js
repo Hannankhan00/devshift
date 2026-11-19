@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Phone, Mail, MapPin } from 'lucide-react';
+import { COMPANY, COMPANY_ADDRESS_ONE_LINE } from '@/lib/company';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -78,6 +80,41 @@ export default function Contact() {
           >
             Please fill out the form below to share your feedback or request information about our services.
           </motion.p>
+        </motion.div>
+
+        {/* Company details */}
+        <motion.div
+          className="max-w-4xl mx-auto mb-10 grid grid-cols-1 gap-4 sm:grid-cols-3"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+        >
+          {[
+            { icon: Phone, label: "Call us", value: COMPANY.phone, href: COMPANY.phoneHref },
+            { icon: Mail, label: "Email us", value: COMPANY.email, href: COMPANY.emailHref },
+            { icon: MapPin, label: "Visit us", value: COMPANY_ADDRESS_ONE_LINE, href: COMPANY.mapHref, external: true },
+          ].map(({ icon: Icon, label, value, href, external }) => (
+            <a
+              key={label}
+              href={href}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="group rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--card-border)' }}
+            >
+              <span
+                className="flex h-11 w-11 items-center justify-center rounded-xl transition-colors duration-300 group-hover:bg-[var(--accent)] group-hover:text-white"
+                style={{ backgroundColor: 'color-mix(in srgb, var(--accent) 12%, transparent)', color: 'var(--accent)' }}
+              >
+                <Icon size={20} aria-hidden="true" />
+              </span>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--accent)' }}>
+                {label}
+              </p>
+              <p className="mt-1 text-sm font-medium leading-snug break-words" style={{ color: 'var(--foreground)' }}>
+                {value}
+              </p>
+            </a>
+          ))}
         </motion.div>
 
         {/* Contact Form */}

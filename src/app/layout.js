@@ -5,6 +5,7 @@ import Footer from "./components/footer";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import ErrorBoundary from "./components/error-boundary";
+import { COMPANY } from "@/lib/company";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,22 @@ export const metadata = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: COMPANY.name,
+  telephone: "+44 161 543 5503",
+  email: COMPANY.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: COMPANY.address.street,
+    addressLocality: COMPANY.address.city,
+    addressRegion: COMPANY.address.region,
+    postalCode: COMPANY.address.postcode,
+    addressCountry: COMPANY.address.country,
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
@@ -35,6 +52,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased`}
       >
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <ErrorBoundary>
           <Header />
           <main className="pt-16">{children}</main>
